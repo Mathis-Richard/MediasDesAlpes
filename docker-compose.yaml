@@ -1,4 +1,10 @@
 services:
+  apache:
+    image: 'ubuntu/apache2:2.4-22.04_beta'
+    ports:
+      - 8082:80
+    volumes:
+      - ./html:/var/www/html
   postgres:
     image: 'postgres:latest'
     environment:
