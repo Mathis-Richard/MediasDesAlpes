@@ -43,12 +43,12 @@ le profil usager et le profil responsable de médiathèque.
 
 **Contraintes fonctionnelles**
 
-*  Les utilisateurs doivent forcément avoir une adresse mail;
-* Les utilisateurs peuvent donner un avis sans laisser de note. C'est-à- dire que la note peut être null;
+* Les utilisateurs doivent obligatoirement avoir une adresse mail;
+* Les utilisateurs peuvent donner un avis sans laisser de note.
 * Un média ne doit avoir qu’un seul genre;
 * Un média ne doit avoir qu’un seul type;
-* La date de retour réelle peut être nul tant que statut d’emprunt n’est pas à l'etat rendu;
-* Le statut d’emprunt peut être : reserve, en_cours ou rendu;
+* La date de retour réelle ne peut pas être renseignée tant que le statut d'emprunt n'est pas défini comme "rendu";
+* Le statut d’emprunt peut être : réservé, en cours ou rendu;
 
 
 **Contraintes techniques**
