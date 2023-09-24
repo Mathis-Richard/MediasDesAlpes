@@ -41,10 +41,21 @@ le profil usager et le profil responsable de médiathèque.
 * Pouvoir consulter les dates auxquelles l’usager doit rendre les médias qu’il a empruntés.
 
 
+**Contraintes fonctionnelles**
 
-**Contraintes particulières**
+*  Les utilisateurs doivent forcément avoir une adresse mail;
+* Les utilisateurs peuvent donner un avis sans laisser de note. C'est-à- dire que la note peut être null;
+* Un média ne doit avoir qu’un seul genre;
+* Un média ne doit avoir qu’un seul type;
+* La date de retour réelle peut être nul tant que statut d’emprunt n’est pas à l'etat rendu;
+* Le statut d’emprunt peut être : reserve, en_cours ou rendu;
+
+
+**Contraintes techniques**
+
 * La solution devra pouvoir fonctionner dans un environnement GNU/LINUX.
 * La solution devra être accessible depuis une interface Web.
+
 
 ## Livrables
 
