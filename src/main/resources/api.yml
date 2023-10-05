@@ -1,0 +1,28 @@
+openapi: 3.0.0
+info:
+  title: MediasAlpes
+  version: '1.0'
+  description: Medias des Alpes
+  contact:
+    name: Mathis
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /version:
+    get:
+      summary: Version de Postgres
+      tags:
+        - version
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: string
+      operationId: get-version
+      description: 'Renvoie la version de Postgres, sert à vérifier surtout que la BDD répond.'
+components:
+  schemas: {}
+tags:
+  - name: version
