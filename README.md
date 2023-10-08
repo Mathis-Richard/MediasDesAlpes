@@ -48,7 +48,10 @@ le profil usager et le profil responsable de médiathèque.
 * Un média ne doit avoir qu’un seul genre;
 * Un média ne doit avoir qu’un seul type;
 * La date de retour réelle ne peut pas être renseignée tant que le statut d'emprunt n'est pas défini comme "rendu";
+* La date de réservation peut ne pas être renseignée car l'emprunt peut être effectué sans réservation préalable.
 * Le statut d’emprunt peut être : réservé, en cours ou rendu;
+
+
 
 
 **Contraintes techniques**
