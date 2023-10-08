@@ -15,10 +15,10 @@ Le contexte est donc celui de la modernisation et la numérisation des registres
 
 ## Problématiques
 
-*Amélioration de l'expérience utilisateur : Comment concevoir un site convivial et intuitif qui facilite la recherche, la sélection, et l'emprunt de médias pour les usagers de la médiathèque ?
-*Optimisation de la gestion des collections : Comment gérer de manière plus efficace et efficiente les stocks de médias en utilisant une base de données, en suivant les emprunts et en anticipant les besoins des usagers ?
-*Mesure de l'impact et de la satisfaction : Comment mesurer l'impact de la modernisation sur la fréquentation de la médiathèque et la satisfaction des usagers, et comment utiliser ces données pour apporter des améliorations continues ?
-*Accessibilité et inclusion : Comment s'assurer que le site web et la base de données sont accessibles à tous, y compris les personnes ayant des besoins spécifiques en matière d'accessibilité ?
+* Amélioration de l'expérience utilisateur : Comment concevoir un site convivial et intuitif qui facilite la recherche, la sélection, et l'emprunt de médias pour les usagers de la médiathèque ?
+* Optimisation de la gestion des collections : Comment gérer de manière plus efficace et efficiente les stocks de médias en utilisant une base de données, en suivant les emprunts et en anticipant les besoins des usagers ?
+* Mesure de l'impact et de la satisfaction : Comment mesurer l'impact de la modernisation sur la fréquentation de la médiathèque et la satisfaction des usagers, et comment utiliser ces données pour apporter des améliorations continues ?
+* Accessibilité et inclusion : Comment s'assurer que le site web et la base de données sont accessibles à tous, y compris les personnes ayant des besoins spécifiques en matière d'accessibilité ?
 
 
 ## Besoins
@@ -26,13 +26,13 @@ Le contexte est donc celui de la modernisation et la numérisation des registres
 Des quelques problématiques décrites ci-dessus, on peut en déduire les besoins principaux du système qui vont se mettre en place. Ces derniers seront décrits sous 2 catégories : 
 le profil usager et le profil responsable de médiathèque.  
 
-* Responsable de médiathèque : * 
+**Responsable de médiathèque** 
 * Pouvoir créer et administrer un compte à chaque nouvel usager de la médiathèque
 * Pouvoir connaître les médias les plus empruntés
 * Pouvoir rajouter des médias dans la BDD 
 * Pouvoir recenser et consulter l’état du média à son emprunt et son retour 
 
-* Usager: *
+**Usager**
 
 * Pouvoir laisser un avis sur un ou plusieurs médias après emprunt
 * Pouvoir consulter les avis laissé par les autres usages ayant réalisé le même emprunt
@@ -68,13 +68,13 @@ le profil usager et le profil responsable de médiathèque.
 
 # Réponse au besoin
 
-## Solutions :
+## Solutions 
 
 ### Solutions fonctionnelles
 
 Voici les fonctionnalités qui seront offertes par l'application :
 
-*Usager : *
+*Usager*
 * Un système de rappel est envoyé aux usagers avant la fin de la réservation. 
 * Un système de gestion des avis laissé par les usagers;
 * Un système de gestion des stocks et de la disponibilitée des médias;
