@@ -44,7 +44,7 @@ le profil usager et le profil responsable de médiathèque.
 **Contraintes fonctionnelles**
 
 * Les utilisateurs doivent obligatoirement avoir une adresse mail;
-* Les utilisateurs peuvent donner un avis sans laisser de note.
+* Les utilisateurs peuvent émettre un avis en écrivant obligatoirement un commentaire, la note cependant, est optionnelle.
 * Un média ne doit avoir qu’un seul genre;
 * Un média ne doit avoir qu’un seul type;
 * La date de retour réelle ne peut pas être renseignée tant que le statut d'emprunt n'est pas défini comme "rendu";
