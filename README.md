@@ -106,7 +106,7 @@ Les mises à jour se font en téléchargeant la dernière version de l'applicati
 ```
 docker-compose down
 ```
-- Télécharger les mises à jours
+- Télécharger les mises à jour
 ```
 git pull
 ```
