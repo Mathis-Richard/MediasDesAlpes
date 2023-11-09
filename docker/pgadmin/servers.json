@@ -1,0 +1,12 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Médias des Alpes",
+      "Group": "Groupe",
+      "Port": 5432,
+      "Username": "mediasadmin",
+      "Host": "localhost",
+      "MaintenanceDB": "mediasmaintenance"
+    }
+  }
+}
