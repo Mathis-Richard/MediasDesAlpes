@@ -82,7 +82,7 @@ Voici les fonctionnalités qui seront offertes par l'application :
 *Responsable de médiathèque*
 * Un système de gestion d'inscriptions doté d'une intelligence capable de vérifier chacune des informations entrée et de vous proposer des solutions ;
 * Un système de gestion des droits sur le site;
-*Un système de gestion des médias dans la médiathèque;
+* Un système de gestion des médias dans la médiathèque;
 * Un système pour savoir quels médias sont les plus populaires.
 
 
