@@ -30,7 +30,7 @@ le profil usager et le profil responsable de médiathèque.
 * Pouvoir créer et administrer un compte à chaque nouvel usager de la médiathèque
 * Pouvoir connaître les médias les plus empruntés
 * Pouvoir rajouter des médias dans la BDD 
-* Pouvoir recenser et consulter l’état du média à son emprunt et son retour 
+* Pouvoir consulter les médias qui sont rendu en retard 
 
 **Usager**
 
