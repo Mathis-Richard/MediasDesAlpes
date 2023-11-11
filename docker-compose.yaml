@@ -25,9 +25,8 @@ services:
     environment:
       PGADMIN_DEFAULT_EMAIL: mediasmaintenance@local.int
       PGADMIN_DEFAULT_PASSWORD: mediaspassword
-      PGADMIN_SERVER_JSON_FILE: ./docker/pgadmin/server.json
     volumes:
-      - ./docker/pgadmin:/root/.pgadmin
+      - /docker/pgadmin/servers.json:/pgadmin4/servers.json
     ports:
       - 8090:80
   spring:

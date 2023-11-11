@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = "fr.univtln.cnam.bdd.groupe5.mediasdesalpes", exclude={SecurityAutoConfiguration.class})
 @ComponentScan(basePackages = "fr.univtln.cnam.bdd.groupe5.mediasdesalpes.*")
-@EntityScan("fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model")
+@EntityScan("fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity")
 @EnableJpaRepositories(basePackages = "fr.univtln.cnam.bdd.groupe5.mediasdesalpes.repository")
 public class MediasDesAlpesApplication {
 

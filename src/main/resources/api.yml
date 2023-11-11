@@ -8,37 +8,104 @@ info:
 servers:
   - url: 'http://localhost:9191'
 paths:
-  /version:
+  '/medias/{idMedia}':
+    parameters:
+      - schema:
+          type: integer
+        name: idMedia
+        in: path
     get:
-      summary: Version de Postgres
-      tags:
-        - version
-      responses:
-        '200':
-          description: OK
-          content:
-            text/plain:
-              schema:
-                type: string
-      operationId: get-version
-      description: 'Renvoie la version de Postgres, sert à vérifier surtout que la BDD répond.'
-  /utilisateur/liste:
-    get:
-      summary: Liste de tous les noms et prénoms
-      tags:
-        - utilisateur
+      summary: Récupère un média par son ID
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-      operationId: get-utilisateur-liste
-      description: Renvoie la Liste.
+                $ref: '#/components/schemas/Media'
+      operationId: get-media-by-id
+      description: ''
+      tags:
+        - media
 components:
-  schemas: {}
+  schemas:
+    Utilisateur:
+      title: Utilisateur
+      type: object
+      properties:
+        id:
+          type: string
+      x-tags:
+        - utilisateur
+    Media:
+      title: Media
+      type: object
+      x-tags:
+        - media
+      properties:
+        idMedia:
+          type: integer
+        titre:
+          type: string
+        idType:
+          $ref: '#/components/schemas/TypeMedia'
+        idGenre:
+          $ref: '#/components/schemas/GenreMedia'
+        idAuteur:
+          $ref: '#/components/schemas/Auteur'
+        anneePublicationSortie:
+          type: integer
+        noteMedia:
+          type: number
+        imgMedia:
+          type: string
+      required:
+        - idMedia
+    GenreMedia:
+      title: Genre
+      type: object
+      x-tags:
+        - media
+      properties:
+        idGenre:
+          type: string
+        designation:
+          type: string
+    TypeMedia:
+      title: Type
+      type: object
+      x-tags:
+        - media
+      properties:
+        idType:
+          type: integer
+        designationType:
+          type: string
+        designationAuteur:
+          type: string
+    NationaliteAuteur:
+      title: Auteur
+      type: object
+      x-tags:
+        - media
+      properties:
+        idNationalite:
+          type: number
+        designation:
+          type: string
+    Auteur:
+      title: Nationalite
+      type: object
+      x-tags:
+        - media
+      properties:
+        idAuteur:
+          type: integer
+        nomAuteur:
+          type: string
+        prenomAuteur:
+          type: string
+        nationaliteAuteur:
+          $ref: '#/components/schemas/NationaliteAuteur'
 tags:
   - name: version
