@@ -1,14 +1,18 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model;
 
+import java.util.List;
+
 public class Media {
 
     private Integer id;
 
     private String titre;
 
-    private TypeMedia idtype;
+    private TypeMedia type;
 
-    private GenreMedia idgenre;
+    private GenreMedia genre;
+
+    private List<Auteur> auteurs;
 
     private Integer anneepublicationsortie;
 
@@ -32,20 +36,20 @@ public class Media {
         this.titre = titre;
     }
 
-    public TypeMedia getIdtype() {
-        return idtype;
+    public TypeMedia getType() {
+        return type;
     }
 
-    public void setIdtype(TypeMedia idtype) {
-        this.idtype = idtype;
+    public void setType(TypeMedia type) {
+        this.type = type;
     }
 
-    public GenreMedia getIdgenre() {
-        return idgenre;
+    public GenreMedia getGenre() {
+        return genre;
     }
 
-    public void setIdgenre(GenreMedia idgenre) {
-        this.idgenre = idgenre;
+    public void setGenre(GenreMedia genre) {
+        this.genre = genre;
     }
 
     public Integer getAnneepublicationsortie() {
@@ -72,4 +76,11 @@ public class Media {
         this.imgmedia = imgmedia;
     }
 
+    public List<Auteur> getAuteurs() {
+        return auteurs;
+    }
+
+    public void setAuteurs(List<Auteur> auteurs) {
+        this.auteurs = auteurs;
+    }
 }

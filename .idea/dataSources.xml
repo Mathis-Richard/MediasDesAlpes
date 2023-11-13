@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="mediasalpes@localhost" uuid="a10a4634-2bdd-4376-b1b0-1e3bf06e315a">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:5432/mediasalpes</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="mediasdesalples@localhost" uuid="d2f00296-750d-4cef-a623-a66162786f54">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>

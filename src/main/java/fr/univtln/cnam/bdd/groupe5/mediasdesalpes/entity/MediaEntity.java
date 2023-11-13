@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-@Entity
+@Entity(name = "MediaEntity")
 @Table(name = "media")
 public class MediaEntity {
     @Id
@@ -17,9 +17,14 @@ public class MediaEntity {
     private String titre;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "idtype", nullable = false)
     private TypeMediaEntity idtype;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "idgenre", nullable = false)
+    private GenreMediaEntity idgenre;
 
     @Column(name = "anneepublicationsortie")
     private Integer anneepublicationsortie;
@@ -27,8 +32,8 @@ public class MediaEntity {
     @Column(name = "notemedia")
     private Double notemedia;
 
-    @Size(max = 500)
-    @Column(name = "imgmedia", length = 500)
+    @Size(max = 1000)
+    @Column(name = "imgmedia", length = 1000)
     private String imgmedia;
 
     public Integer getId() {
@@ -53,6 +58,14 @@ public class MediaEntity {
 
     public void setIdtype(TypeMediaEntity idtype) {
         this.idtype = idtype;
+    }
+
+    public GenreMediaEntity getIdgenre() {
+        return idgenre;
+    }
+
+    public void setIdgenre(GenreMediaEntity idgenre) {
+        this.idgenre = idgenre;
     }
 
     public Integer getAnneepublicationsortie() {
