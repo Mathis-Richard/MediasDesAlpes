@@ -8,12 +8,13 @@ info:
 servers:
   - url: 'http://localhost:9191'
 paths:
-  '/medias/{idMedia}':
+  '/media/{idMedia}':
     parameters:
       - schema:
           type: integer
         name: idMedia
         in: path
+        required: true
     get:
       summary: Récupère un média par son ID
       responses:
@@ -23,6 +24,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Media'
+        '404':
+          description: Not Found
       operationId: get-media-by-id
       description: ''
       tags:
@@ -43,31 +46,33 @@ components:
       x-tags:
         - media
       properties:
-        idMedia:
+        id:
           type: integer
         titre:
           type: string
-        idType:
+        type:
           $ref: '#/components/schemas/TypeMedia'
-        idGenre:
+        genre:
           $ref: '#/components/schemas/GenreMedia'
-        idAuteur:
-          $ref: '#/components/schemas/Auteur'
+        auteurs:
+          type: array
+          items:
+            $ref: '#/components/schemas/Auteur'
         anneePublicationSortie:
           type: integer
-        noteMedia:
+        note:
           type: number
-        imgMedia:
+        img:
           type: string
       required:
-        - idMedia
+        - id
     GenreMedia:
       title: Genre
       type: object
       x-tags:
         - media
       properties:
-        idGenre:
+        id:
           type: string
         designation:
           type: string
@@ -77,35 +82,33 @@ components:
       x-tags:
         - media
       properties:
-        idType:
+        id:
           type: integer
         designationType:
           type: string
         designationAuteur:
           type: string
     NationaliteAuteur:
-      title: Auteur
+      title: NationaliteAuteur
       type: object
       x-tags:
-        - media
+        - auteur
       properties:
-        idNationalite:
-          type: number
+        id:
+          type: integer
         designation:
           type: string
     Auteur:
-      title: Nationalite
+      title: Auteur
       type: object
-      x-tags:
-        - media
       properties:
-        idAuteur:
+        id:
           type: integer
-        nomAuteur:
+        nom:
           type: string
-        prenomAuteur:
+        prenom:
           type: string
-        nationaliteAuteur:
+        nationalite:
           $ref: '#/components/schemas/NationaliteAuteur'
-tags:
-  - name: version
+      x-tags:
+        - auteur

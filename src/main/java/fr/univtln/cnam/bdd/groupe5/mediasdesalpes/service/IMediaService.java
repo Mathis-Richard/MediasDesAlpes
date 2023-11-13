@@ -4,6 +4,6 @@ import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Media;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface IMediasService {
+public interface IMediaService {
     Media getMediaById(Integer id);
 }
