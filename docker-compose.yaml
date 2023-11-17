@@ -1,9 +1,9 @@
 services:
   web:
     container_name: web_container
-    image: 'ubuntu/apache2:2.4-22.04_beta'
+    image: 'ubuntu/apache2:latest'
     ports:
-      - 8080:80
+      - '8080:80'
     volumes:
       - ./docker/html:/var/www/html
   postgres:
@@ -21,17 +21,18 @@ services:
       - '5432:5432'
   pgadmin:
     container_name: pgadmin_container
-    image: dpage/pgadmin4:7.6
+    image: 'dpage/pgadmin4:latest'
     environment:
       PGADMIN_DEFAULT_EMAIL: mediasmaintenance@local.int
       PGADMIN_DEFAULT_PASSWORD: mediaspassword
     volumes:
       - /docker/pgadmin/servers.json:/pgadmin4/servers.json
     ports:
-      - 8090:80
-  spring:
-    container_name: spring_container
+      - '8090:80'
+  javaspring:
+    container_name: java_spring_container
+    restart: unless-stopped
     build:
       context: .
     ports:
-      - 8081:8080
+      - '9191:9191'

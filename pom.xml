@@ -10,9 +10,10 @@
     </parent>
     <groupId>fr.univtln.cnam.bdd.groupe5</groupId>
     <artifactId>MediasDesAlpes</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>MediasDesAlpes</name>
     <description>BDD de la Mediatheque de Chateauroux-Les-Alpes</description>
+
     <properties>
         <java.version>20</java.version>
         <org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
@@ -95,6 +96,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.name}-Launcher</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
