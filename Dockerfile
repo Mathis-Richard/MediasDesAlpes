@@ -1,11 +1,15 @@
-FROM eclipse-temurin:20-jdk
+FROM maven:3.9.4-eclipse-temurin-21 AS builder
+LABEL stage="mavenbuilder"
 
 WORKDIR /app
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
-RUN ./mvnw dependency:resolve
-
+COPY pom.xml ./
 COPY src ./src
+RUN mvn clean package
 
-CMD ["./mvnw", "spring-boot:run"]
+FROM eclipse-temurin:21-jre
+
+WORKDIR /app
+COPY target/MediasDesAlpes-Launcher.jar app.jar
+
+CMD ["java","-jar","app.jar"]

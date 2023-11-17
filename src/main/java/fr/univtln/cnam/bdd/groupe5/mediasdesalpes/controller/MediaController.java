@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.List;
+
 @Controller
-@CrossOrigin(origins = "null", originPatterns = {"http://localhost:[*]"}, allowedHeaders = "*", allowCredentials = "true")
+@CrossOrigin(origins = "null", originPatterns = {"http://postgres:[*]","http://localhost:[*]"}, allowedHeaders = "*", allowCredentials = "true")
 public class MediaController implements MediaApi {
 
     private MediaServiceImpl mediaServiceImpl;
@@ -21,7 +23,13 @@ public class MediaController implements MediaApi {
     }
 
     @Override
+    public ResponseEntity<List<MediaJson>> getMedia() {
+        return ResponseEntity.ok(MediaMapper.INSTANCE.mapToJson(mediaServiceImpl.getMedia()));
+    }
+
+    @Override
     public ResponseEntity<MediaJson> getMediaById(Integer idMedia) {
         return ResponseEntity.ok(MediaMapper.INSTANCE.mapToJson(mediaServiceImpl.getMediaById(idMedia)));
     }
+
 }

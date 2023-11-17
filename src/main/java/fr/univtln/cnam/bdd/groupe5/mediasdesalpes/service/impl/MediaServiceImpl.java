@@ -8,6 +8,8 @@ import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.repository.IMediaRepository;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.service.IMediaService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class MediaServiceImpl implements IMediaService {
 
@@ -17,6 +19,11 @@ public class MediaServiceImpl implements IMediaService {
     public MediaServiceImpl(IMediaRepository mediaRepository, IAuteurRepository auteurRepository) {
         this.mediaRepository = mediaRepository;
         this.auteurRepository = auteurRepository;
+    }
+
+    @Override
+    public List<Media> getMedia() {
+        return MediaMapper.INSTANCE.mapToModel(mediaRepository.getMedia());
     }
 
     @Override

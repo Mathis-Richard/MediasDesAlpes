@@ -26,10 +26,26 @@ paths:
                 $ref: '#/components/schemas/Media'
         '404':
           description: Not Found
+        '500':
+          description: Internal Server Error
       operationId: get-media-by-id
       description: ''
       tags:
         - media
+  /media:
+    get:
+      summary: Récupère tous les médias
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Media'
+      operationId: get-media
 components:
   schemas:
     Utilisateur:

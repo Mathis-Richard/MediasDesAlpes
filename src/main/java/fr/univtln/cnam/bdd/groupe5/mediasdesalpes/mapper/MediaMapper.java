@@ -13,6 +13,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper(uses = AuteurMapper.class)
 public interface MediaMapper {
 
@@ -24,12 +26,16 @@ public interface MediaMapper {
     @Mapping(target = "img", source = "imgmedia")
     MediaJson mapToJson(Media media);
 
-    @Mapping(source="idtype",target="type")
-    @Mapping(source="idgenre",target="genre")
+    @Mapping(source = "idtype", target = "type")
+    @Mapping(source = "idgenre", target = "genre")
     Media mapToModel(MediaEntity mediaEntity);
 
-    @Mapping(source="designationtype",target="designationType")
-    @Mapping(source="designationauteur",target="designationAuteur")
+    List<MediaJson> mapToJson(List<Media> media);
+
+    List<Media> mapToModel(List<MediaEntity> mediaEntity);
+
+    @Mapping(source = "designationtype", target = "designationType")
+    @Mapping(source = "designationauteur", target = "designationAuteur")
     TypeMediaJson mapToJson(TypeMedia type);
 
     GenreMediaJson mapToJson(GenreMedia type);
