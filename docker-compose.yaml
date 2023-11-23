@@ -6,7 +6,7 @@ services:
       - '8080:80'
     volumes:
       - ./docker/html:/var/www/html
-      - ./docker/html_config/apache2.conf:/etc/apache2/apache2.conf
+      - ./docker/html_config/httpd.conf:/usr/local/apache2/conf/httpd.conf
   postgres:
     container_name: postgres_container
     volumes:
