@@ -21,9 +21,8 @@ public class AuteurEntity {
     @Column(name = "prenomauteur")
     private String prenomauteur;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "nationaliteauteur", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nationaliteauteur")
     private NationaliteAuteurEntity nationaliteauteur;
 
     public Integer getId() {

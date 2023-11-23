@@ -16,7 +16,7 @@ public class Media {
 
     private Integer anneepublicationsortie;
 
-    private Double notemedia;
+    private Double notemoyenne;
 
     private String imgmedia;
 
@@ -60,12 +60,12 @@ public class Media {
         this.anneepublicationsortie = anneepublicationsortie;
     }
 
-    public Double getNotemedia() {
-        return notemedia;
+    public Double getNotemoyenne() {
+        return notemoyenne;
     }
 
-    public void setNotemedia(Double notemedia) {
-        this.notemedia = notemedia;
+    public void setNotemoyenne(Double notemoyenne) {
+        this.notemoyenne = notemoyenne;
     }
 
     public String getImgmedia() {

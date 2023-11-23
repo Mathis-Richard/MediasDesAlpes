@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableWebMvc
-@SpringBootApplication(scanBasePackages = "fr.univtln.cnam.bdd.groupe5.mediasdesalpes", exclude={SecurityAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages = "fr.univtln.cnam.bdd.groupe5.mediasdesalpes")// , exclude={SecurityAutoConfiguration.class})
 @ComponentScan(basePackages = "fr.univtln.cnam.bdd.groupe5.mediasdesalpes.*")
 @EntityScan("fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity")
 @EnableJpaRepositories(basePackages = "fr.univtln.cnam.bdd.groupe5.mediasdesalpes.repository")

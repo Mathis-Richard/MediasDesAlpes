@@ -1,6 +1,7 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity(name = "Genremedia")
@@ -12,7 +13,8 @@ public class GenreMediaEntity {
     private Integer id;
 
     @Size(max = 255)
-    @Column(name = "designation")
+    @NotNull
+    @Column(name = "designation", nullable = false)
     private String designation;
 
     public Integer getId() {

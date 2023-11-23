@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-@Entity(name = "MediaEntity")
+@Entity(name = "Media")
 @Table(name = "media")
 public class MediaEntity {
     @Id
@@ -13,24 +13,25 @@ public class MediaEntity {
     private Integer id;
 
     @Size(max = 255)
-    @Column(name = "titre")
+    @NotNull
+    @Column(name = "titre", nullable = false)
     private String titre;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idtype", nullable = false)
     private TypeMediaEntity idtype;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idgenre", nullable = false)
     private GenreMediaEntity idgenre;
 
     @Column(name = "anneepublicationsortie")
     private Integer anneepublicationsortie;
 
-    @Column(name = "notemedia")
-    private Double notemedia;
+    @Column(name = "notemoyenne")
+    private Double notemoyenne;
 
     @Size(max = 1000)
     @Column(name = "imgmedia", length = 1000)
@@ -76,12 +77,12 @@ public class MediaEntity {
         this.anneepublicationsortie = anneepublicationsortie;
     }
 
-    public Double getNotemedia() {
-        return notemedia;
+    public Double getNotemoyenne() {
+        return notemoyenne;
     }
 
-    public void setNotemedia(Double notemedia) {
-        this.notemedia = notemedia;
+    public void setNotemoyenne(Double notemoyenne) {
+        this.notemoyenne = notemoyenne;
     }
 
     public String getImgmedia() {

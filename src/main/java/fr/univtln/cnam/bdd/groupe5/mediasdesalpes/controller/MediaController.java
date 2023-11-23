@@ -1,6 +1,6 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.controller;
 
-import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.api.MediaApi;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.api.MediasApi;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.MediaJson;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper.MediaMapper;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.service.impl.MediaServiceImpl;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin(origins = "null", originPatterns = {"http://postgres:[*]","http://localhost:[*]"}, allowedHeaders = "*", allowCredentials = "true")
-public class MediaController implements MediaApi {
+public class MediaController implements MediasApi {
 
     private MediaServiceImpl mediaServiceImpl;
 

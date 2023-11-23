@@ -8,7 +8,7 @@ info:
 servers:
   - url: 'http://localhost:9191'
 paths:
-  '/media/{idMedia}':
+  '/medias/{idMedia}':
     parameters:
       - schema:
           type: integer
@@ -31,11 +31,10 @@ paths:
       operationId: get-media-by-id
       description: ''
       tags:
-        - media
-  /media:
+        - medias
+  /medias:
     get:
       summary: Récupère tous les médias
-      tags: []
       responses:
         '200':
           description: OK
@@ -46,21 +45,94 @@ paths:
                 items:
                   $ref: '#/components/schemas/Media'
       operationId: get-media
+      tags:
+        - medias
+    parameters: []
+  /utilisateurs:
+    post:
+      summary: Tous les utilisateurs
+      operationId: post-user-login
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JwtResponse'
+        '500':
+          description: Internal Server Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnexionForm'
+      tags:
+        - utilisateurs
+    parameters: []
+  /connexion:
+    post:
+      summary: Connexion
+      operationId: post-connexion
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnexionForm'
+        description: ''
+      tags:
+        - connexion
+    parameters: []
+  /inscription:
+    post:
+      summary: Inscription
+      operationId: post-inscription
+      responses:
+        '201':
+          description: Created
+        '302':
+          description: Found
+        '406':
+          description: Not Acceptable
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Utilisateur'
+        description: ''
+      tags:
+        - inscription
 components:
   schemas:
     Utilisateur:
       title: Utilisateur
       type: object
-      properties:
-        id:
-          type: string
       x-tags:
-        - utilisateur
+        - utilisateurs
+      properties:
+        emailUtilisateur:
+          type: string
+        mdpUtilisateur:
+          type: string
+        nomUtilisateur:
+          type: string
+        prenomUtilisateur:
+          type: string
+        adresseUtilisateur:
+          type: string
+        numTelephoneUtilisateur:
+          type: string
+        dateNaissanceUtilisateur:
+          type: string
     Media:
       title: Media
       type: object
       x-tags:
-        - media
+        - medias
       properties:
         id:
           type: integer
@@ -86,7 +158,7 @@ components:
       title: Genre
       type: object
       x-tags:
-        - media
+        - medias
       properties:
         id:
           type: string
@@ -96,7 +168,7 @@ components:
       title: Type
       type: object
       x-tags:
-        - media
+        - medias
       properties:
         id:
           type: integer
@@ -108,7 +180,7 @@ components:
       title: NationaliteAuteur
       type: object
       x-tags:
-        - auteur
+        - auteurs
       properties:
         id:
           type: integer
@@ -127,4 +199,20 @@ components:
         nationalite:
           $ref: '#/components/schemas/NationaliteAuteur'
       x-tags:
-        - auteur
+        - auteurs
+    ConnexionForm:
+      title: ConnexionForm
+      type: object
+      properties:
+        login:
+          type: string
+        password:
+          type: string
+      x-tags:
+        - connexion
+    JwtResponse:
+      title: JwtResponse
+      type: object
+      properties:
+        token:
+          type: string

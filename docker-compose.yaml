@@ -1,11 +1,12 @@
 services:
   web:
     container_name: web_container
-    image: 'ubuntu/apache2:latest'
+    image: 'httpd:latest'
     ports:
       - '8080:80'
     volumes:
       - ./docker/html:/var/www/html
+      - ./docker/html_config/apache2.conf:/etc/apache2/apache2.conf
   postgres:
     container_name: postgres_container
     volumes:

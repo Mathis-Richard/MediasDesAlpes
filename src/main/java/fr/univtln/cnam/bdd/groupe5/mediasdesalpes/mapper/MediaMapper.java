@@ -20,9 +20,8 @@ public interface MediaMapper {
 
     MediaMapper INSTANCE = Mappers.getMapper(MediaMapper.class);
 
-
     @Mapping(target = "anneePublicationSortie", source = "anneepublicationsortie")
-    @Mapping(target = "note", source = "notemedia")
+    @Mapping(target = "note", source = "notemoyenne")
     @Mapping(target = "img", source = "imgmedia")
     MediaJson mapToJson(Media media);
 

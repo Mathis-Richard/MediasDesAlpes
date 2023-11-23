@@ -1,9 +1,6 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
@@ -11,6 +8,7 @@ import jakarta.validation.constraints.Size;
 @Table(name = "typemedia")
 public class TypeMediaEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idtype", nullable = false)
     private Integer id;
 

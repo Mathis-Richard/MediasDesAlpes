@@ -1,50 +1,30 @@
-package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity;
-
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model;
 
 import java.sql.Date;
 
-@Entity(name = "Utilisateur")
-@Table(name = "utilisateur")
-public class UtilisateurEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idutilisateur", nullable = false)
+public class Utilisateur {
+
+    public enum TypeProfil {
+        UTILISATEUR, ADMINISTRATEUR
+    }
+
+    private TypeProfil typeprofil;
     private Integer id;
-
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "emailutilisateur", nullable = false)
     private String emailutilisateur;
-
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "nomutilisateur", nullable = false)
     private String nomutilisateur;
-
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "prenomutilisateur", nullable = false)
     private String prenomutilisateur;
-
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "adresseutilisateur", nullable = false)
     private String adresseutilisateur;
-
-    @Size(max = 20)
-    @NotNull
-    @Column(name = "numtelephoneutilisateur", nullable = false, length = 20)
     private String numtelephoneutilisateur;
-
-    @Size(max = 255)
-    @NotNull
-    @Column(name = "mdputilisateur", nullable = false)
     private String mdputilisateur;
 
-    @Column(name = "datenaissanceutilisateur", nullable = false)
+    public Date getDatenaissanceutilisateur() {
+        return datenaissanceutilisateur;
+    }
+
+    public void setDatenaissanceutilisateur(Date datenaissanceutilisateur) {
+        this.datenaissanceutilisateur = datenaissanceutilisateur;
+    }
+
     private Date datenaissanceutilisateur;
 
     public Integer getId() {
@@ -102,22 +82,6 @@ public class UtilisateurEntity {
     public void setMdputilisateur(String mdputilisateur) {
         this.mdputilisateur = mdputilisateur;
     }
-
-    public Date getDatenaissanceutilisateur() {
-        return datenaissanceutilisateur;
-    }
-
-    public void setDatenaissanceutilisateur(Date datenaissanceutilisateur) {
-        this.datenaissanceutilisateur = datenaissanceutilisateur;
-    }
-
-    public enum TypeProfil {
-        UTILISATEUR,ADMINISTRATEUR
-    }
-
-    @Column(name = "typeprofil")
-    @Enumerated(EnumType.STRING)
-    private TypeProfil typeprofil;
 
     public TypeProfil getTypeprofil() {
         return typeprofil;

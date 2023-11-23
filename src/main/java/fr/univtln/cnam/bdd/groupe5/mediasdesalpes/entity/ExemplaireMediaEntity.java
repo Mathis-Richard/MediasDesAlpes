@@ -12,9 +12,8 @@ public class ExemplaireMediaEntity {
     private Integer id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idmedia", nullable = false)
-    private MediaEntity idmedia;
+    @Column(name = "idmedia", nullable = false)
+    private Integer idmedia;
 
     public Integer getId() {
         return id;
@@ -24,11 +23,11 @@ public class ExemplaireMediaEntity {
         this.id = id;
     }
 
-    public MediaEntity getIdmedia() {
+    public Integer getIdmedia() {
         return idmedia;
     }
 
-    public void setIdmedia(MediaEntity idmedia) {
+    public void setIdmedia(Integer idmedia) {
         this.idmedia = idmedia;
     }
 

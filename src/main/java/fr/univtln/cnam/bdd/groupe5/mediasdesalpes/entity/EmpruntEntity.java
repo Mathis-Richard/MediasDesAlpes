@@ -32,10 +32,6 @@ public class EmpruntEntity {
     @Column(name = "dateretourreelle")
     private LocalDate dateretourreelle;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "statutemprunt")
-    private StatutEmpruntEntity statutEmpruntEntity;
-
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idexemplaire", nullable = false)
@@ -89,14 +85,6 @@ public class EmpruntEntity {
         this.dateretourreelle = dateretourreelle;
     }
 
-    public StatutEmpruntEntity getStatutemprunt() {
-        return statutEmpruntEntity;
-    }
-
-    public void setStatutemprunt(StatutEmpruntEntity statutEmpruntEntity) {
-        this.statutEmpruntEntity = statutEmpruntEntity;
-    }
-
     public ExemplaireMediaEntity getIdexemplaire() {
         return idexemplaire;
     }
@@ -105,4 +93,10 @@ public class EmpruntEntity {
         this.idexemplaire = idexemplaire;
     }
 
+/*
+    TODO [JPA Buddy] create field to map the 'statutemprunt' column
+     Available actions: Define target Java type | Uncomment as is | Remove column mapping
+    @Column(name = "statutemprunt", columnDefinition = "statutemprunt(0, 0) not null")
+    private Object statutemprunt;
+*/
 }
