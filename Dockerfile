@@ -5,6 +5,7 @@ WORKDIR /app
 
 COPY pom.xml ./
 COPY src ./src
+COPY src/main/resources/build_application.properties ./src/main/resources/application.properties
 RUN mvn clean package
 
 FROM eclipse-temurin:21-jre
