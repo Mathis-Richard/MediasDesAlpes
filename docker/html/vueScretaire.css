@@ -1,0 +1,67 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: 2px solid blue;
+    margin: 5px;
+}
+
+.viewContainer {
+    display: flex;
+    flex-grow: 4;
+    border: 2px solid green;
+    margin: 5px;
+    flex-direction: column;
+    overflow: auto;
+}
+
+
+.button {
+    display: block;
+    border: 2px solid red;
+    box-sizing: border-box;
+    text-align: center;
+    margin: 5px;
+    flex-grow: 1;
+}
+
+.topButtons {
+    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: white;
+}
+
+.topButton {
+    border: 2px solid red;
+    box-sizing: border-box;
+    text-align: center;
+    margin: 5px;
+    flex-grow: 1;
+    height: 85%;
+    /*box-sizing: border-box;*/
+}
+
+#vueCreateMedia {
+    padding: 5px;
+}

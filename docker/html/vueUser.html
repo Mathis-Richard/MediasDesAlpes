@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.foundation.min.css">
+    <link rel="stylesheet" type="text/css" href="vueScretaire.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.7/js/dataTables.foundation.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="vueSecretaire.js"></script>
+    <link rel="stylesheet" type="text/css" href="createUserForm.css">
+    <link rel="stylesheet" type="text/css" href="vueUser.css">
+
+    <title>Bozo sort</title>
+    <script type="text/javascript" charset="utf8" src="vueSecretaire.js"></script>
+    <script type="text/javascript" charset="utf8" src="vueUser.js"></script>
+
+
+</head>
+
+<body>
+    <div class="buttonContainer">
+        <button class="button" id="buttonA">Banque Media</button>
+        <button class="button" id="buttonB">Donation Media</button>
+        <button class="button" id="buttonC">Emprunts</button>
+    </div>
+
+    <div id="viewContainerId">
+        <script>
+            document.getElementById('buttonA').addEventListener('click', () => {
+                while (document.getElementById('viewContainerId').children.length > 0) {
+                    document.getElementById('viewContainerId').children[0].remove();
+                }
+
+                const booksData = [
+                    {
+                        url: "https://static.wikia.nocookie.net/charabattles/images/e/e2/Galactus.jpg/revision/latest?cb=20180922145009&path-prefix=fr",
+                        title: "Titre du livre 1",
+                        description: "Description du livre 1.",
+                        author: "Auteur du livre 1",
+                        genre: "Genre du livre 1",
+                        releaseDate: "Date de sortie du livre 1",
+                        averageRating: "Note moyenne du livre 1"
+                    },
+                    {
+                        url: "https://cdn.discordapp.com/attachments/1153953348412776489/1177280132851961947/image.png?ex=6571ee90&is=655f7990&hm=9c9255f1e38bea2c599c65585749979d2d9c1e96ab0492b18103dc654accfcc7&",
+                        title: "Titre du livre 2",
+                        description: "Description du livre 2.",
+                        author: "Auteur du livre 2",
+                        genre: "Genre du livre 2",
+                        releaseDate: "Date de sortie du livre 2",
+                        averageRating: "Note moyenne du livre 2"
+                    },
+                    {
+                        url: "https://static.wikia.nocookie.net/charabattles/images/e/e2/Galactus.jpg/revision/latest?cb=20180922145009&path-prefix=fr",
+                        title: "3",
+                        description: "3",
+                        author: "3",
+                        genre: "3",
+                        releaseDate: "3",
+                        averageRating: "3"
+                    },
+                    {
+                        url: "https://static.wikia.nocookie.net/charabattles/images/e/e2/Galactus.jpg/revision/latest?cb=20180922145009&path-prefix=fr",
+                        title: "4",
+                        description: "4",
+                        author: "4",
+                        genre: "4",
+                        releaseDate: "4",
+                        averageRating: "4"
+                    },
+                    {
+                        url: "https://static.wikia.nocookie.net/charabattles/images/e/e2/Galactus.jpg/revision/latest?cb=20180922145009&path-prefix=fr",
+                        title: "5",
+                        description: "5",
+                        author: "5",
+                        genre: "5",
+                        releaseDate: "5",
+                        averageRating: "5"
+                    },
+                    {
+                        url: "https://static.wikia.nocookie.net/charabattles/images/e/e2/Galactus.jpg/revision/latest?cb=20180922145009&path-prefix=fr",
+                        title: "6",
+                        description: "6",
+                        author: "6",
+                        genre: "6",
+                        releaseDate: "6",
+                        averageRating: "6"
+                    },
+
+                ];
+                document.getElementById('viewContainerId').appendChild(mediaCardMaker(booksData));
+            })
+
+            document.getElementById('buttonB').addEventListener('click', () => {
+                while (document.getElementById('viewContainerId').children.length > 0) {
+                    document.getElementById('viewContainerId').children[0].remove();
+                }
+                createMediaFormUserView();
+            })
+            document.getElementById('buttonC').addEventListener('click', () => {
+                while (document.getElementById('viewContainerId').children.length > 0) {
+                    document.getElementById('viewContainerId').children[0].remove();
+                }
+                const columnNames = ["ID_Media", "Titre", "Auteur/Réalisateur", "Année de publication/Sortie", "Type de média", "Quantité disponible", "Statut"];
+                    const rowData = [
+                        ["1", "JoeDoeStory", "Joe", "2015", "Livre", "2", "Réservé"],
+                        ["2", "MusicMania", "Alice", "2018", "CD", "3", "Disponible"],
+                        ["3", "FilmFiesta", "Bob", "2020", "DVD", "1", "Emprunté"],
+                        ["4", "AdventureTime", "Charlie", "2017", "Livre", "5", "Disponible"],
+                        ["5", "RockStar", "David", "2019", "CD", "4", "Réservé"],
+                        ["6", "MovieMagic", "Eva", "2022", "DVD", "6", "Emprunté"],
+                        ["7", "SciFiSaga", "Frank", "2016", "Livre", "8", "Disponible"],
+                        ["8", "JazzJam", "Grace", "2021", "CD", "7", "Réservé"],
+                        ["9", "ComedyCentral", "Henry", "2019", "DVD", "10", "Disponible"],
+                        ["10", "MysteryManor", "Ivy", "2014", "Livre", "9", "Emprunté"],
+                        ["11", "ClassicHits", "Jack", "2020", "CD", "12", "Réservé"],
+                        ["12", "ActionArena", "Kelly", "2017", "DVD", "11", "Emprunté"],
+                        ["13", "FantasyWorld", "Liam", "2018", "Livre", "14", "Disponible"],
+                        ["14", "PopParade", "Mia", "2022", "CD", "13", "Réservé"],
+                        ["15", "DramaDelight", "Nathan", "2015", "DVD", "16", "Disponible"],
+                        ["16", "HistoryHighlight", "Olivia", "2016", "Livre", "15", "Emprunté"],
+                    ];
+                    createReadTableUserView(columnNames, rowData);
+            })
+        </script>
+    </div>
+
+
+</body>
+
+</html>

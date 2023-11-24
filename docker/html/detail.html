@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" charset="utf8" src="vueUser.js"></script>
+    <script type="text/javascript" charset="utf8" src="vueScretaire.css"></script>
+    <script type="text/javascript" charset="utf8" src="createUserForm.css"></script>
+    <title>Page 2</title>
+</head>
+
+<body>
+
+    <h1>Page 2</h1>
+
+    <script>
+        // Récupérer la valeur du paramètre 'data' de la query string
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const data = urlParams.get('data');
+        let objectData;
+        // Afficher la valeur dans la page
+        if (data) {
+            objectData = JSON.parse(data);
+        }
+        var titre = "Mon Titre";
+        var urlImage = "chemin/vers/image.jpg";
+        var maHashMap = { cle1: "valeur1", cle2: "valeur2", cle3: "valeur3" };
+
+        var htmlGenere = genererHTML(titre, urlImage, maHashMap);
+    </script>
+
+</body>
+
+</html>
