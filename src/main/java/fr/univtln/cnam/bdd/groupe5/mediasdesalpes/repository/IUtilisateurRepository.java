@@ -7,15 +7,33 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.util.List;
 
 @Repository
 public interface IUtilisateurRepository extends JpaRepository<UtilisateurEntity,Long> {
 
     @Query(value = "SELECT * FROM utilisateur WHERE emailutilisateur LIKE :email", nativeQuery = true)
-    UtilisateurEntity findByEmail(String email);
+    UtilisateurEntity getUserByEmail(String email);
+
+    @Query(value = "SELECT * FROM utilisateur", nativeQuery = true)
+    List<UtilisateurEntity> getUsers();
+
+    @Query(value = "SELECT * FROM utilisateur LIMIT :limit OFFSET :offset", nativeQuery = true)
+    List<UtilisateurEntity> getUsersLimitAndPage(Integer limit, Integer offset);
 
     @Modifying
     @Query(value = "INSERT INTO utilisateur (emailUtilisateur, nomUtilisateur, prenomUtilisateur, adresseUtilisateur, numTelephoneUtilisateur, mdpUtilisateur, dateNaissanceUtilisateur, typeProfil)" +
-            "VALUES (:emailutilisateur, :nomutilisateur, :prenomutilisateur, :adresseutilisateur, :numtelephoneutilisateur, :mdputilisateur, :datenaissanceutilisateur, 'UTILISATEUR')", nativeQuery = true)
-    Integer createUser(String emailutilisateur, String nomutilisateur, String prenomutilisateur, String adresseutilisateur, String numtelephoneutilisateur, String mdputilisateur, Date datenaissanceutilisateur);
+            "VALUES (:emailutilisateur, :nomutilisateur, :prenomutilisateur, :adresseutilisateur, :numtelephoneutilisateur, :mdputilisateur, :datenaissanceutilisateur, CAST(:typeProfil AS typeprofil))", nativeQuery = true)
+    Integer createUser(String emailutilisateur, String nomutilisateur, String prenomutilisateur, String adresseutilisateur, String numtelephoneutilisateur, String mdputilisateur, Date datenaissanceutilisateur, String typeProfil);
+
+    @Modifying
+    @Query(value = "DELETE FROM utilisateur WHERE emailutilisateur = :email", nativeQuery = true)
+    Integer deleteUser(String email);
+
+    @Modifying
+    @Query(value = "UPDATE utilisateur " +
+            "SET emailutilisateur = :emailutilisateur, nomutilisateur = :nomutilisateur, prenomutilisateur = :prenomutilisateur, adresseutilisateur = :adresseutilisateur, numtelephoneutilisateur = :numtelephoneutilisateur, mdputilisateur = :mdputilisateur, datenaissanceutilisateur = :datenaissanceutilisateur, typeProfil = CAST(:typeProfil AS typeprofil) " +
+            "WHERE emailutilisateur= :email", nativeQuery = true)
+    Integer updateUser(String email, String emailutilisateur, String nomutilisateur, String prenomutilisateur, String adresseutilisateur, String numtelephoneutilisateur, String mdputilisateur, Date datenaissanceutilisateur, String typeProfil);
+
 }
