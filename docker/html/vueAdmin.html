@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.foundation.min.css">
+    <link rel="stylesheet" type="text/css" href="vueScretaire.css">
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.13.7/js/dataTables.foundation.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="vueSecretaire.js"></script>
+    <link rel="stylesheet" type="text/css" href="createUserForm.css">
+    <title>Vue Admin</title>
+
+</head>
+
+<body>
+    <div class="buttonContainer">
+        <button class="button" id="buttonA">Administration des comptes</button>
+        <button class="button" id="buttonB">Classement Medias</button>
+        <button class="button" id="buttonC">Rajouter des Medias</button>
+        <button class="button" id="buttonD">Emprunt/Retour/Etats des Medias</button>
+    </div>
+    <div class="viewContainer">
+        <div class="topButtons" id="topButtonsContainer">
+
+        </div>
+        <div id="vueCreateMedia">
+            <div id="searchInput"></div>
+            <script>
+                document.getElementById('buttonA').addEventListener('click', () => {
+                    const createButton = document.createElement('button');
+                    const modifyButton = document.createElement('button');
+                    if (document.getElementById('vueCreateMedia').children.length > 0) document.getElementById('vueCreateMedia').innerHTML = '';
+                    if (!document.getElementById('isTopButtons')) {
+                        createButton.classList.add('topButton', 'button');
+                        createButton.id = 'isTopButtons';
+                        createButton.innerText = "CREER UN COMPTE UTILISATEUR";
+                        modifyButton.classList.add('topButton', 'button');
+                        modifyButton.id = 'isTopButtons';
+                        modifyButton.innerText = "MODIFIER UN COMPTE UTILISATEUR";
+                        document.getElementById('topButtonsContainer').append(createButton, modifyButton);
+                    }
+
+                    createButton.addEventListener('click', () => {
+                        createUserAccountForm();
+                    })
+
+                    modifyButton.addEventListener('click', () => {
+                        modifyUserAccountForm();
+                    })
+
+                })
+
+                document.getElementById('buttonB').addEventListener('click', () => {
+                    const columnNames = ["ID_Media", "Titre", "Auteur/Réalisateur", "Année de publication/Sortie", "Type de média", "Quantité disponible", "Statut"];
+                    const rowData = [
+                        ["1", "JoeDoeStory", "Joe", "2015", "Livre", "2", "Réservé"],
+                        ["2", "MusicMania", "Alice", "2018", "CD", "3", "Disponible"],
+                        ["3", "FilmFiesta", "Bob", "2020", "DVD", "1", "Emprunté"],
+                        ["4", "AdventureTime", "Charlie", "2017", "Livre", "5", "Disponible"],
+                        ["5", "RockStar", "David", "2019", "CD", "4", "Réservé"],
+                        ["6", "MovieMagic", "Eva", "2022", "DVD", "6", "Emprunté"],
+                        ["7", "SciFiSaga", "Frank", "2016", "Livre", "8", "Disponible"],
+                        ["8", "JazzJam", "Grace", "2021", "CD", "7", "Réservé"],
+                        ["9", "ComedyCentral", "Henry", "2019", "DVD", "10", "Disponible"],
+                        ["10", "MysteryManor", "Ivy", "2014", "Livre", "9", "Emprunté"],
+                        ["11", "ClassicHits", "Jack", "2020", "CD", "12", "Réservé"],
+                        ["12", "ActionArena", "Kelly", "2017", "DVD", "11", "Emprunté"],
+                        ["13", "FantasyWorld", "Liam", "2018", "Livre", "14", "Disponible"],
+                        ["14", "PopParade", "Mia", "2022", "CD", "13", "Réservé"],
+                        ["15", "DramaDelight", "Nathan", "2015", "DVD", "16", "Disponible"],
+                        ["16", "HistoryHighlight", "Olivia", "2016", "Livre", "15", "Emprunté"],
+                    ];
+                    createReadTable(columnNames, rowData);
+                });
+
+                document.getElementById('buttonC').addEventListener('click', () => {
+                    createMediaForm();
+                })
+
+                document.getElementById('buttonD').addEventListener('click', () => {
+                    const columnNames = ["OUI", "NON", "JESAISPASQUOIMETTRE", "JURE WALA"];
+                    const rowData = [
+                    ["Gollum ? ", "Oui mon fils?", "Non rien", "bozo"],     
+                    ["Sauron ?", "Oui maître?", "Rien du tout", "Kupo"],
+                    ["Frodon ?", "Oui Sam?", "Juste une ombre", "Pépin"],
+                    ["Gandalf ?", "Oui Aragorn?", "Pas de problème", "Radagast"],
+                    ["Galadriel ?", "Oui Celeborn?", "Rien d'important", "Nenya"],
+                    ["Bilbon ?", "Oui Frodon?", "Aucune idée", "Precieux"]];
+                    createReadTable(columnNames, rowData);
+                })
+            </script>
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>
