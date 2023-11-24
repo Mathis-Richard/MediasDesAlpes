@@ -23,4 +23,16 @@ public class GenreMedia {
         this.designation = designation;
     }
 
+    public GenreMedia(Integer id, String designation) {
+        this.id = id;
+        this.designation = designation;
+    }
+
+    public GenreMedia(Integer id) {
+        this.id = id;
+        this.designation = "";
+    }
+
+    public GenreMedia() {
+    }
 }

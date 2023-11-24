@@ -24,6 +24,8 @@ public interface MediaMapper {
     @Mapping(target = "anneePublicationSortie", source = "anneepublicationsortie")
     @Mapping(target = "note", source = "notemoyenne")
     @Mapping(target = "img", source = "imgmedia")
+    @Mapping(target = "idType", source = "type.id")
+    @Mapping(target = "idGenre", source = "genre.id")
     MediaJson mapToJson(Media media);
 
     @Mapping(source = "idtype", target = "type")
@@ -34,6 +36,7 @@ public interface MediaMapper {
     @Mapping(source = "note", target = "notemoyenne")
     @Mapping(source = "img", target = "imgmedia")
     Media mapToModel(MediaJson mediaEntity);
+
 
     List<MediaJson> mapToJson(List<Media> media);
 

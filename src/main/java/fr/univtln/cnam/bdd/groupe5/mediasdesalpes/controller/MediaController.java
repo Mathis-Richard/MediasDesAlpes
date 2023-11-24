@@ -4,8 +4,12 @@ import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.api.MediasApi;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.MediaJson;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.PostMediasWithLimitsRequestJson;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper.MediaMapper;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.GenreMedia;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Media;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.TypeMedia;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.service.impl.MediaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -25,8 +29,8 @@ public class MediaController implements MediasApi {
 
     @Override
     public ResponseEntity<Void> deleteMediaById(Integer idMedia) {
-        mediaServiceImpl.deleteMediaById(idMedia);
-        return ResponseEntity.ok(null);
+        Integer i = mediaServiceImpl.deleteMediaById(idMedia);
+        return i > 0 ? ResponseEntity.ok(null) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override
@@ -36,23 +40,31 @@ public class MediaController implements MediasApi {
 
     @Override
     public ResponseEntity<MediaJson> getMediaById(Integer idMedia) {
-        return ResponseEntity.ok(MediaMapper.INSTANCE.mapToJson(mediaServiceImpl.getMediaById(idMedia)));
+        Media m = mediaServiceImpl.getMediaById(idMedia);
+        return m != null ? ResponseEntity.ok(MediaMapper.INSTANCE.mapToJson(m)) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override
     public ResponseEntity<Void> patchMediaById(Integer idMedia, MediaJson mediaJson) {
-        mediaServiceImpl.updateMediaById(idMedia,MediaMapper.INSTANCE.mapToModel(mediaJson));
-        return ResponseEntity.ok(null);
+        Media m = MediaMapper.INSTANCE.mapToModel(mediaJson);
+        m.setGenre(new GenreMedia(mediaJson.getIdType()));
+        m.setType(new TypeMedia(mediaJson.getIdGenre()));
+        Integer i = mediaServiceImpl.updateMediaById(idMedia,m);
+        return i > 0 ? ResponseEntity.ok(null) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override
     public ResponseEntity<List<MediaJson>> postMediasWithLimits(PostMediasWithLimitsRequestJson postMediasWithLimitsRequestJson) {
-        return ResponseEntity.ok(MediaMapper.INSTANCE.mapToJson(mediaServiceImpl.computeMediaWithLimits(postMediasWithLimitsRequestJson.getLimit(),postMediasWithLimitsRequestJson.getPage())));
+        List<MediaJson> l = MediaMapper.INSTANCE.mapToJson(mediaServiceImpl.computeMediaWithLimits(postMediasWithLimitsRequestJson.getLimit(),postMediasWithLimitsRequestJson.getPage()));
+        return !l.isEmpty() ? ResponseEntity.ok(l) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Override
     public ResponseEntity<Void> postNewMedia(MediaJson mediaJson) {
-        mediaServiceImpl.computeNewMedia(MediaMapper.INSTANCE.mapToModel(mediaJson));
-        return ResponseEntity.ok(null);
+        Media m = MediaMapper.INSTANCE.mapToModel(mediaJson);
+        m.setGenre(new GenreMedia(mediaJson.getIdType()));
+        m.setType(new TypeMedia(mediaJson.getIdGenre()));
+        Integer i = mediaServiceImpl.computeNewMedia(m);
+        return i > 0 ? ResponseEntity.ok(null) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

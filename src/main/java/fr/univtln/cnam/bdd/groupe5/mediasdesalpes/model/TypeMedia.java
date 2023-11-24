@@ -10,6 +10,22 @@ import jakarta.validation.constraints.Size;
 public class TypeMedia {
 
     private Integer id;
+
+    public TypeMedia(Integer id, String designationtype, String designationauteur) {
+        this.id = id;
+        this.designationtype = designationtype;
+        this.designationauteur = designationauteur;
+    }
+
+    public TypeMedia(Integer id) {
+        this.id = id;
+        this.designationtype = "";
+        this.designationauteur = "";
+    }
+
+    public TypeMedia() {
+    }
+
     private String designationtype;
     private String designationauteur;
 

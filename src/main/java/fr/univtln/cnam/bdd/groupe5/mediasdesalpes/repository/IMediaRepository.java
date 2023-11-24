@@ -1,6 +1,8 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.repository;
 
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity.GenreMediaEntity;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity.MediaEntity;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity.TypeMediaEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -30,9 +32,15 @@ public interface IMediaRepository extends JpaRepository<MediaEntity,Long> {
 
     @Modifying
     @Query(value = "UPDATE media " +
-            "SET titre = :titre, idType = :idType, idGenre = :idGenre, annePublicationSortie = :anneePublicationSortie, imgMedia = :imgMedia)" +
+            "SET titre = :titre, idType = :idType, idGenre = :idGenre, anneePublicationSortie = :anneePublicationSortie, imgMedia = :imgMedia " +
             "WHERE idmedia = :id",
             nativeQuery = true)
     Integer updateMedia(Integer id, String titre, Integer idType, Integer idGenre, Integer anneePublicationSortie, String imgMedia);
 
+    @Query(value = "SELECT * FROM typemedia WHERE idtype = :id",
+            nativeQuery = true)
+    TypeMediaEntity getTypeMedia(Integer id);
+    @Query(value = "SELECT * FROM genremedia WHERE idgenre = :id",
+            nativeQuery = true)
+    GenreMediaEntity getGenreMedia(Integer id);
 }

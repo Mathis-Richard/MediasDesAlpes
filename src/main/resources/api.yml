@@ -237,54 +237,6 @@ paths:
           description: Internal Server Error
       tags:
         - utilisateurs
-  '/utilisateurs/{idUtilisateur}':
-    parameters:
-      - schema:
-          type: integer
-        name: idUtilisateur
-        in: path
-        required: true
-    get:
-      summary: Récupère un utilisateur par son ID
-      tags:
-        - utilisateurs
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Utilisateur'
-        '404':
-          description: Not Found
-        '500':
-          description: Internal Server Error
-      operationId: get-utilisateur-by-id
-    patch:
-      summary: Met à jour un utilisateur par son ID
-      operationId: patch-utilisateur-by-id
-      responses:
-        '200':
-          description: OK
-        '404':
-          description: Not Found
-        '500':
-          description: Internal Server Error
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Utilisateur'
-      tags:
-        - utilisateurs
-    delete:
-      summary: Supprime un utilisateur par son ID
-      operationId: delete-utilisateur-by-id
-      responses:
-        '200':
-          description: OK
-      tags:
-        - utilisateurs
   /utilisateurs/new:
     parameters: []
     post:
@@ -331,14 +283,10 @@ components:
           type: integer
         titre:
           type: string
-        type:
-          $ref: '#/components/schemas/TypeMedia'
-        genre:
-          $ref: '#/components/schemas/GenreMedia'
-        auteurs:
-          type: array
-          items:
-            $ref: '#/components/schemas/Auteur'
+        idType:
+          type: integer
+        idGenre:
+          type: integer
         anneePublicationSortie:
           type: integer
         note:
@@ -390,7 +338,7 @@ components:
         prenom:
           type: string
         nationalite:
-          $ref: '#/components/schemas/NationaliteAuteur'
+          type: integer
     ConnexionForm:
       title: ConnexionForm
       type: object
@@ -401,10 +349,4 @@ components:
           type: string
       x-tags:
         - connexion
-    JwtResponse:
-      title: JwtResponse
-      type: object
-      properties:
-        token:
-          type: string
   securitySchemes: {}

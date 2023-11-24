@@ -30,9 +30,7 @@ public class MediaServiceImpl implements IMediaService {
 
     @Override
     public Media getMediaById(Integer id) {
-        Media out = MediaMapper.INSTANCE.mapToModel(mediaRepository.getMediaById(id));
-        out.setAuteurs(AuteurMapper.INSTANCE.mapToModel(auteurRepository.getAuteursByMediaId(id)));
-        return out;
+        return MediaMapper.INSTANCE.mapToModel(mediaRepository.getMediaById(id));
     }
 
     @Override

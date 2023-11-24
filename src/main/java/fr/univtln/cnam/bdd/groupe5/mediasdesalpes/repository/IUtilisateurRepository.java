@@ -1,11 +1,9 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.repository;
 
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity.UtilisateurEntity;
-import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Utilisateur;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;

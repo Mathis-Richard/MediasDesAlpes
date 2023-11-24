@@ -19,17 +19,7 @@ public class UtilisateurController implements UtilisateursApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteUtilisateurById(Integer idUtilisateur) {
-        return null;
-    }
-
-    @Override
     public ResponseEntity<UtilisateurJson> getUtilisateurByEmail(String emailUtilisateur) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<UtilisateurJson> getUtilisateurById(Integer idUtilisateur) {
         return null;
     }
 
@@ -40,11 +30,6 @@ public class UtilisateurController implements UtilisateursApi {
 
     @Override
     public ResponseEntity<Void> patchUtilisateurByEmail(String emailUtilisateur, UtilisateurJson utilisateurJson) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<Void> patchUtilisateurById(Integer idUtilisateur, UtilisateurJson utilisateurJson) {
         return null;
     }
 
