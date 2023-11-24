@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS ExemplaireMedia
 );
 CREATE TABLE IF NOT EXISTS AuteurMedia
 (
-    idAuteur SERIAL REFERENCES Auteur (idAuteur),
-    idMedia  SERIAL REFERENCES Media (idMedia),
+    idAuteur SERIAL REFERENCES Auteur (idAuteur) ON DELETE CASCADE,
+    idMedia  SERIAL REFERENCES Media (idMedia) ON DELETE CASCADE,
     PRIMARY KEY (idAuteur, idMedia)
 );
 CREATE TABLE IF NOT EXISTS Utilisateur
@@ -111,17 +111,18 @@ EXECUTE FUNCTION calculMoyenne();
 ------ INSERTIONS ------
 
 INSERT INTO NationaliteAuteur(designation)
-VALUES ('Anglais');
+VALUES ('Anglais'),('Français');
 INSERT INTO TypeMedia(designationType, designationAuteur)
 VALUES ('Musique', 'Auteur');
 INSERT INTO GenreMedia(designation)
-VALUES ('Rock');
+VALUES ('Rock'),('Rap');
 INSERT INTO Auteur(nomAuteur, prenomAuteur, nationaliteAuteur)
 VALUES ('Wilder', 'Alan', 1),
        ('L Gore', 'Martin', 1),
        ('Gahan', 'Dave', 1),
        ('Fletcher', 'Andrew', 1),
-       ('Clarke', 'Vince', 1);;
+       ('Clarke', 'Vince', 1),
+       ('Boo', 'Ba', 2);
 INSERT INTO Media(titre,
                   idType,
                   idGenre,
@@ -157,7 +158,9 @@ VALUES ('Speak & Spell', 1, 1, 1981, 5,
        ('Spirit', 1, 1, 2017, 5,
         'https://ia801409.us.archive.org/28/items/mbid-d2f52f4a-d7df-46b3-9d6f-c60757d8326c/mbid-d2f52f4a-d7df-46b3-9d6f-c60757d8326c-16231834931.jpg'),
        ('Memento Mori', 1, 1, 2023, 5,
-        'https://ia801602.us.archive.org/33/items/mbid-b3fdc1ce-7561-45a2-9a81-853f988859c8/mbid-b3fdc1ce-7561-45a2-9a81-853f988859c8-34849885476.jpg')
+        'https://ia801602.us.archive.org/33/items/mbid-b3fdc1ce-7561-45a2-9a81-853f988859c8/mbid-b3fdc1ce-7561-45a2-9a81-853f988859c8-34849885476.jpg'),
+       ('ULTRA', 1, 1, 2015, 0,
+        '')
 ;
 INSERT INTO AuteurMedia(idAuteur, idMedia)
 VALUES (2, 1),
@@ -212,9 +215,10 @@ VALUES (2, 1),
        (4, 14),
        (2, 15),
        (3, 15),
-       (4, 15);
+       (4, 15),
+       (6, 16);
 
 INSERT INTO Utilisateur (emailUtilisateur, nomUtilisateur, prenomUtilisateur, adresseUtilisateur,
                          numTelephoneUtilisateur, mdpUtilisateur, dateNaissanceUtilisateur, typeProfil)
 VALUES ('davegahan@local.int', 'Gahan', 'Dave', 'Basildon', '20231981',
-        '$2y$10$Xa6bJiw4K9Ux8FUiz7r0n.DLed8imaKPDteU5Wgar7KD1vgQm1FTO', '1962-05-09', 'ADMINSTRATEUR');
+        '$2y$10$Xa6bJiw4K9Ux8FUiz7r0n.DLed8imaKPDteU5Wgar7KD1vgQm1FTO', '1962-05-09', 'ADMINISTRATEUR');

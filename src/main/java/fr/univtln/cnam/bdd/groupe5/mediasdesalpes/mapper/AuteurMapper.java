@@ -6,10 +6,11 @@ import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = UtilsMapper.class)
 public interface AuteurMapper {
 
     AuteurMapper INSTANCE = Mappers.getMapper(AuteurMapper.class);
@@ -28,6 +29,7 @@ public interface AuteurMapper {
     NationaliteAuteurJson mapToJson(NationaliteAuteur nationaliteAuteur);
 
     NationaliteAuteur mapToModel(NationaliteAuteurEntity nationaliteAuteurEntity);
+
 
 }
 

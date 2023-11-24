@@ -12,10 +12,11 @@ import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.TypeMedia;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.util.List;
 
-@Mapper(uses = AuteurMapper.class)
+@Mapper(uses = {AuteurMapper.class, UtilsMapper.class})
 public interface MediaMapper {
 
     MediaMapper INSTANCE = Mappers.getMapper(MediaMapper.class);
@@ -28,6 +29,11 @@ public interface MediaMapper {
     @Mapping(source = "idtype", target = "type")
     @Mapping(source = "idgenre", target = "genre")
     Media mapToModel(MediaEntity mediaEntity);
+
+    @Mapping(source = "anneePublicationSortie", target = "anneepublicationsortie")
+    @Mapping(source = "note", target = "notemoyenne")
+    @Mapping(source = "img", target = "imgmedia")
+    Media mapToModel(MediaJson mediaEntity);
 
     List<MediaJson> mapToJson(List<Media> media);
 
@@ -42,5 +48,7 @@ public interface MediaMapper {
     TypeMedia mapToModel(TypeMediaEntity typeMediaEntity);
 
     GenreMedia mapToModel(GenreMediaEntity genreMediaEntity);
+
+
 }
 

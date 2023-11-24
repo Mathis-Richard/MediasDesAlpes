@@ -6,11 +6,12 @@ import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Utilisateur;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.sql.Date;
 import java.time.LocalDate;
 
-@Mapper(uses = AuteurMapper.class)
+@Mapper(uses = {AuteurMapper.class, UtilsMapper.class})
 public interface UtilisateurMapper {
 
     UtilisateurMapper INSTANCE = Mappers.getMapper(UtilisateurMapper.class);
@@ -25,8 +26,7 @@ public interface UtilisateurMapper {
     @Mapping(source = "dateNaissanceUtilisateur", target = "datenaissanceutilisateur")
     Utilisateur map(UtilisateurJson utilisateurJson);
 
-    default Date map(String value){
-        return Date.valueOf(value);
-    }
+
+
 }
 

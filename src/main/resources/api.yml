@@ -32,6 +32,38 @@ paths:
       description: ''
       tags:
         - medias
+    patch:
+      summary: Effectue des changements à un média avec ID spécifique
+      operationId: patch-media-by-id
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Media'
+      tags:
+        - medias
+      description: ''
+    delete:
+      summary: Supprimer un média de la base par son ID
+      operationId: delete-media-by-id
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      tags:
+        - medias
   /medias:
     get:
       summary: Récupère tous les médias
@@ -44,40 +76,106 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Media'
+        '500':
+          description: Internal Server Error
       operationId: get-media
       tags:
         - medias
     parameters: []
-  /utilisateurs:
     post:
-      summary: Tous les utilisateurs
-      operationId: post-user-login
+      summary: Récupère les médias dans la limite d'un nombre passé
+      operationId: post-medias-with-limits
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/JwtResponse'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Media'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                limit:
+                  type: integer
+                page:
+                  type: integer
+      tags:
+        - medias
+  /medias/new:
+    post:
+      summary: Crée un nouveau média
+      operationId: post-new-media
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
         '500':
           description: Internal Server Error
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ConnexionForm'
+              $ref: '#/components/schemas/Media'
+  /utilisateurs:
+    parameters: []
+    get:
+      summary: Récupère tous les utilisateurs
+      operationId: get-utilisateurs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Utilisateur'
+        '500':
+          description: Internal Server Error
       tags:
         - utilisateurs
-    parameters: []
+    post:
+      summary: Récupère tous les utilisateurs dans la limite d'un nombre passé
+      operationId: post-utilisateurs-with-limit
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Utilisateur'
+        '400':
+          description: Bad Request
+      description: ''
+      tags:
+        - utilisateurs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                limit:
+                  type: integer
+                page:
+                  type: integer
   /connexion:
     post:
-      summary: Connexion
+      summary: Connecte un utilisateur
       operationId: post-connexion
       responses:
         '200':
           description: OK
         '404':
-          description: Not Found
+          description: L'utilisateur n'existe pas ou le mot de passe est éronné
       requestBody:
         content:
           application/json:
@@ -87,25 +185,118 @@ paths:
       tags:
         - connexion
     parameters: []
-  /inscription:
-    post:
-      summary: Inscription
-      operationId: post-inscription
+  '/utilisateurs/{emailUtilisateur}':
+    parameters:
+      - schema:
+          type: string
+        name: emailUtilisateur
+        in: path
+        required: true
+    get:
+      summary: Récupère un utilisateur par son email
       responses:
-        '201':
-          description: Created
-        '302':
-          description: Found
-        '406':
-          description: Not Acceptable
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utilisateur'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-utilisateur-by-email
+      tags:
+        - utilisateurs
+    patch:
+      summary: Met à jour un utilisateur par sonemailD
+      operationId: patch-utilisateur-by-email
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/Utilisateur'
-        description: ''
       tags:
-        - inscription
+        - utilisateurs
+    delete:
+      summary: Supprime un utilisateur par son email
+      operationId: delete-utilisateur-by-email
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      tags:
+        - utilisateurs
+  '/utilisateurs/{idUtilisateur}':
+    parameters:
+      - schema:
+          type: integer
+        name: idUtilisateur
+        in: path
+        required: true
+    get:
+      summary: Récupère un utilisateur par son ID
+      tags:
+        - utilisateurs
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utilisateur'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      operationId: get-utilisateur-by-id
+    patch:
+      summary: Met à jour un utilisateur par son ID
+      operationId: patch-utilisateur-by-id
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Utilisateur'
+      tags:
+        - utilisateurs
+    delete:
+      summary: Supprime un utilisateur par son ID
+      operationId: delete-utilisateur-by-id
+      responses:
+        '200':
+          description: OK
+      tags:
+        - utilisateurs
+  /utilisateurs/new:
+    parameters: []
+    post:
+      summary: Enregistre un nouvel utilisateur
+      operationId: post-new-utilisateur
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
 components:
   schemas:
     Utilisateur:
@@ -114,6 +305,8 @@ components:
       x-tags:
         - utilisateurs
       properties:
+        id:
+          type: integer
         emailUtilisateur:
           type: string
         mdpUtilisateur:
@@ -152,8 +345,6 @@ components:
           type: number
         img:
           type: string
-      required:
-        - id
     GenreMedia:
       title: Genre
       type: object
@@ -161,7 +352,7 @@ components:
         - medias
       properties:
         id:
-          type: string
+          type: integer
         designation:
           type: string
     TypeMedia:
@@ -189,6 +380,8 @@ components:
     Auteur:
       title: Auteur
       type: object
+      x-tags:
+        - auteurs
       properties:
         id:
           type: integer
@@ -198,8 +391,6 @@ components:
           type: string
         nationalite:
           $ref: '#/components/schemas/NationaliteAuteur'
-      x-tags:
-        - auteurs
     ConnexionForm:
       title: ConnexionForm
       type: object
@@ -216,3 +407,4 @@ components:
       properties:
         token:
           type: string
+  securitySchemes: {}
