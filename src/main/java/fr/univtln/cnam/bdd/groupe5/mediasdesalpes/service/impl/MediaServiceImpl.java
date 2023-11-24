@@ -29,6 +29,11 @@ public class MediaServiceImpl implements IMediaService {
     }
 
     @Override
+    public List<Media> getMediasClassement() {
+        return MediaMapper.INSTANCE.mapToModel(mediaRepository.getMediaClassement());
+    }
+
+    @Override
     public Media getMediaById(Integer id) {
         return MediaMapper.INSTANCE.mapToModel(mediaRepository.getMediaById(id));
     }

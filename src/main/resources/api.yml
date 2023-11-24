@@ -254,6 +254,29 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Utilisateur'
+  /medias/classement:
+    get:
+      summary: Récupère le classement des médias
+      tags:
+        - medias
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Media'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    media:
+                      type: string
+      operationId: get-medias-classement
 components:
   schemas:
     Utilisateur:

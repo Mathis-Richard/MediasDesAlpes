@@ -15,6 +15,8 @@ public interface IMediaRepository extends JpaRepository<MediaEntity,Long> {
 
     @Query(value = "SELECT * FROM media", nativeQuery = true)
     List<MediaEntity> getMedia();
+    @Query(value = "SELECT * FROM media ORDER BY noteMoyenne DESC", nativeQuery = true)
+    List<MediaEntity> getMediaClassement();
     @Query(value = "SELECT * FROM media LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<MediaEntity> getMediaLimitAndPage(Integer limit, Integer offset);
     @Query(value = "SELECT * FROM media WHERE idmedia = :id", nativeQuery = true)

@@ -1,6 +1,7 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.controller;
 
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.api.MediasApi;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.GetMediasClassement200ResponseInnerJson;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.MediaJson;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.PostMediasWithLimitsRequestJson;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper.MediaMapper;
@@ -42,6 +43,11 @@ public class MediaController implements MediasApi {
     public ResponseEntity<MediaJson> getMediaById(Integer idMedia) {
         Media m = mediaServiceImpl.getMediaById(idMedia);
         return m != null ? ResponseEntity.ok(MediaMapper.INSTANCE.mapToJson(m)) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public ResponseEntity<List<MediaJson>> getMediasClassement() {
+        return ResponseEntity.ok(MediaMapper.INSTANCE.mapToJson(mediaServiceImpl.getMediasClassement()));
     }
 
     @Override

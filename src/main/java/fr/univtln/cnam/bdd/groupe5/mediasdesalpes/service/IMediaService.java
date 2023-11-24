@@ -9,6 +9,7 @@ import java.util.List;
 public interface IMediaService {
 
     List<Media> getMedia();
+    List<Media> getMediasClassement();
     Media getMediaById(Integer id);
     Integer deleteMediaById(Integer id);
     Integer updateMediaById(Integer id, Media data);
