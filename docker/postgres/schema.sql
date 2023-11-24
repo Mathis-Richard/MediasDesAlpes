@@ -218,15 +218,15 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE PROCEDURE ajouterTypes(nouveaux_types VARCHAR[], designations_auteur VARCHAR[]) AS
+CREATE OR REPLACE PROCEDURE ajouterAuteursAMedias(idsMedia VARCHAR[], idsAuteur VARCHAR[]) AS
 $$
 DECLARE
     i INT;
 BEGIN
-    FOR i IN 1..array_length(nouveaux_types, 1)
+    FOR i IN 1..array_length(idsMedia, 1)
         LOOP
-            INSERT INTO TypeMedia (designationType, designationAuteur)
-            VALUES (nouveaux_types[i], designations_auteur[i]);
+            INSERT INTO AuteurMedia (idMedia, idAuteur)
+            VALUES (idsMedia[i], idsAuteur[i]);
         END LOOP;
 END;
 $$ LANGUAGE plpgsql;
