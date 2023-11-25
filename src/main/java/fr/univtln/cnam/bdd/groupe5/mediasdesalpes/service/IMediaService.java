@@ -1,5 +1,6 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.service;
 
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Auteur;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.GenreMedia;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Media;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.TypeMedia;
@@ -20,4 +21,11 @@ public interface IMediaService {
 
     List<TypeMedia> getTypes();
     List<GenreMedia> getGenres();
+
+    List<Auteur> getAuteurs();
+    List<Auteur> getAuteursByMediaId(Integer id);
+    Auteur getAuteurById(Integer id);
+    Integer computeNewAuteur(Auteur a);
+    Integer updateAuteurById(Integer id, Auteur data);
+    Integer deleteAuteurById(Integer id);
 }

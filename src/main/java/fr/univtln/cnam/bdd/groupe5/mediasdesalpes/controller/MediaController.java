@@ -1,9 +1,11 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.controller;
 
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.api.AuteursApi;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.api.GenresApi;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.api.MediasApi;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.api.TypesApi;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.*;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper.AuteurMapper;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper.MediaMapper;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.GenreMedia;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Media;
@@ -19,7 +21,7 @@ import java.util.List;
 
 @Controller
 @CrossOrigin(origins = "null", originPatterns = {"http://web:[*]", "http://postgres:[*]", "http://localhost:[*]"}, allowedHeaders = "*", allowCredentials = "true")
-public class MediaController implements MediasApi, GenresApi, TypesApi {
+public class MediaController implements MediasApi, GenresApi, TypesApi, AuteursApi {
 
     private MediaServiceImpl mediaServiceImpl;
 
@@ -82,5 +84,39 @@ public class MediaController implements MediasApi, GenresApi, TypesApi {
     @Override
     public ResponseEntity<List<TypeMediaJson>> getTypes() {
         return ResponseEntity.ok(MediaMapper.INSTANCE.mapTypeToJson(mediaServiceImpl.getTypes()));
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteAuteurById(String idAuteur) {
+        mediaServiceImpl.deleteAuteurById(Integer.valueOf(idAuteur));
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> getAuteurById(String idAuteur) {
+        mediaServiceImpl.getAuteurById(Integer.valueOf(idAuteur));
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<List<AuteurJson>> getAuteurs() {
+        return ResponseEntity.ok(AuteurMapper.INSTANCE.mapToJson(mediaServiceImpl.getAuteurs()));
+    }
+
+    @Override
+    public ResponseEntity<List<AuteurJson>> getAuteursMediasIdMedia(String idMedia) {
+        return ResponseEntity.ok(AuteurMapper.INSTANCE.mapToJson(mediaServiceImpl.getAuteursByMediaId(Integer.valueOf(idMedia))));
+    }
+
+    @Override
+    public ResponseEntity<Void> patchAuteurById(String idAuteur, AuteurJson auteurJson) {
+        mediaServiceImpl.updateAuteurById(Integer.valueOf(idAuteur),AuteurMapper.INSTANCE.mapToModel(auteurJson));
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> postNewAuteur(AuteurJson auteurJson) {
+        mediaServiceImpl.updateAuteurById(auteurJson.getId(), AuteurMapper.INSTANCE.mapToModel(auteurJson));
+        return null;
     }
 }

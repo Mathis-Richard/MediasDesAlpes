@@ -1,6 +1,8 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.service.impl;
 
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper.AuteurMapper;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper.MediaMapper;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Auteur;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.GenreMedia;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Media;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.TypeMedia;
@@ -90,4 +92,35 @@ public class MediaServiceImpl implements IMediaService {
     public List<GenreMedia> getGenres() {
         return MediaMapper.INSTANCE.mapGenreToModel(genreRepository.getGenresMedia());
     }
+
+    @Override
+    public List<Auteur> getAuteurs() {
+        return AuteurMapper.INSTANCE.mapToModel(auteurRepository.getAuteurs());
+    }
+
+    @Override
+    public List<Auteur> getAuteursByMediaId(Integer id) {
+        return AuteurMapper.INSTANCE.mapToModel(auteurRepository.getAuteursByMediaId(id));
+    }
+
+    @Override
+    public Auteur getAuteurById(Integer id) {
+        return AuteurMapper.INSTANCE.mapToModel(auteurRepository.getAuteurById(id));
+    }
+
+    @Override
+    public Integer computeNewAuteur(Auteur a) {
+        return auteurRepository.insertAuteur(a.getNomauteur(),a.getPrenomauteur(),a.getNationaliteauteur().getId());
+    }
+
+    @Override
+    public Integer updateAuteurById(Integer id, Auteur data) {
+        return auteurRepository.updateAuteur(id,data.getNomauteur(),data.getPrenomauteur(),data.getNationaliteauteur().getId());
+    }
+
+    @Override
+    public Integer deleteAuteurById(Integer id) {
+        return auteurRepository.deleteAuteur(id);
+    }
+
 }

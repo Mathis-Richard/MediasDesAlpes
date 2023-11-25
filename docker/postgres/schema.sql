@@ -2,7 +2,7 @@ DROP SCHEMA public CASCADE;
 CREATE SCHEMA public;
 
 CREATE TYPE TypeProfil AS ENUM ('UTILISATEUR','ADMINISTRATEUR');
-CREATE TYPE StatutEmprunt AS ENUM ('R_ATTENTE','R_CONFIRME','R_ANNULE','E_ENCOURS','E_TERMINE','R_RETARD');
+CREATE TYPE StatutEmprunt AS ENUM ('R_ATTENTE','R_ANNULE','E_ENCOURS','E_TERMINE','R_RETARD');
 
 CREATE TABLE IF NOT EXISTS TypeMedia
 (
@@ -83,8 +83,8 @@ CREATE TABLE IF NOT EXISTS Emprunt
     idEmprunt        SERIAL PRIMARY KEY,
     idUtilisateur    SERIAL        NOT NULL REFERENCES Utilisateur (idUtilisateur),
     dateReservation  DATE,
-    dateEmprunt      DATE          NOT NULL,
-    dateRetourPrevue DATE          NOT NULL,
+    dateEmprunt      DATE,
+    dateRetourPrevue DATE,
     dateRetourReelle DATE,
     statutEmprunt    StatutEmprunt NOT NULL,
     idExemplaire     SERIAL        NOT NULL REFERENCES ExemplaireMedia (idExemplaire)
@@ -139,58 +139,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION setDisponibiliteMedia() RETURNS TRIGGER AS
-$$
-BEGIN
-    UPDATE Media
-    SET disponible = EXISTS (SELECT 1
-                             FROM ExemplaireMedia
-                             WHERE idMedia = NEW.idMedia
-                               AND (idExemplaire NOT IN (SELECT idExemplaire FROM Emprunt) OR idExemplaire IN
-                                                                                              (SELECT idExemplaire
-                                                                                               FROM Emprunt
-                                                                                               WHERE statutEmprunt IN ('R_ANNULE', 'E_TERMINE'))))
-    WHERE idMedia = NEW.idMedia;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
 CREATE OR REPLACE TRIGGER majMoyenne
     AFTER INSERT OR UPDATE
     ON Avis
     FOR EACH ROW
 EXECUTE FUNCTION calculMoyenne();
-
-CREATE OR REPLACE TRIGGER majDisponibilite
-    AFTER INSERT OR UPDATE
-    ON Emprunt
-    FOR EACH ROW
-EXECUTE PROCEDURE setDisponibiliteMedia();
-
-CREATE OR REPLACE FUNCTION verifierEmpruntsAvantInsertion() RETURNS TRIGGER AS $$
-DECLARE
-    toutesCopiesReserveesOuEmpruntees BOOLEAN;
-BEGIN
-    -- Vérifiez si tous les exemplaires du média sont empruntés ou réservés (sauf si la réservation est annulée)
-    SELECT NOT EXISTS (
-        SELECT 1 FROM ExemplaireMedia WHERE idMedia = NEW.idMedia AND idExemplaire NOT IN (
-            SELECT idExemplaire FROM Emprunt WHERE NOT (statutEmprunt = 'R_ANNULE' OR statutEmprunt = 'E_TERMINE')
-        )
-    ) INTO toutesCopiesReserveesOuEmpruntees;
-
-    -- Si tous les exemplaires sont empruntés ou réservés, créez un nouvel emprunt avec le statut 'R_ENATTENTE'
-    IF toutesCopiesReserveesOuEmpruntees THEN
-        INSERT INTO Emprunt (idUtilisateur, dateReservation, dateEmprunt, dateRetourPrevue, statutEmprunt, idExemplaire)
-        VALUES (NEW.idUtilisateur, CURRENT_DATE, NULL, NULL, 'R_ENATTENTE', NEW.idExemplaire);
-    END IF;
-
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER empruntAvantInsertion
-    BEFORE INSERT ON Emprunt
-    FOR EACH ROW EXECUTE PROCEDURE verifierEmpruntsAvantInsertion();
 
 CREATE OR REPLACE PROCEDURE retourExemplaire(IN idExemplaireParam INTEGER)
     LANGUAGE plpgsql
@@ -206,44 +159,52 @@ BEGIN
     WITH reservationEnAttente AS (
         SELECT idEmprunt
         FROM Emprunt
-        WHERE idExemplaire = idExemplaireParam AND statutEmprunt = 'R_ENATTENTE'
+        WHERE idExemplaire = idExemplaireParam AND statutEmprunt = 'R_ATTENTE'
         ORDER BY dateReservation
         LIMIT 1
     )
-    -- Si une réservation en attente existe, mettez à jour son statut en 'R_CONFIRME'
+    -- Si une réservation en attente existe, mettez à jour son statut en 'E_ENCOURS', la date d'emprunt et la date de retour prévue
     UPDATE Emprunt
-    SET statutEmprunt = 'R_CONFIRME'
+    SET statutEmprunt = 'E_ENCOURS',
+        dateEmprunt = CURRENT_DATE,
+        dateRetourPrevue = CURRENT_DATE + INTERVAL '14 days'
     WHERE idEmprunt IN (TABLE reservationEnAttente);
 END;
 $$;
 
-CREATE OR REPLACE PROCEDURE empruntExemplaire(IN idUtilisateurParam INTEGER)
+CREATE OR REPLACE PROCEDURE empruntExemplaire(IN idUtilisateurParam INTEGER, IN idExemplaireParam INTEGER)
     LANGUAGE plpgsql
 AS $$
 DECLARE
-    idExemplaireDisponible INTEGER;
+    exemplaireDisponible BOOLEAN;
 BEGIN
-    -- Trouvez le premier exemplaire disponible
-    SELECT idExemplaire INTO idExemplaireDisponible
-    FROM ExemplaireMedia
-    WHERE idExemplaire NOT IN (
-        SELECT idExemplaire FROM Emprunt WHERE NOT (statutEmprunt = 'R_ANNULE' OR statutEmprunt = 'E_TERMINE')
-    )
-    LIMIT 1;
+    -- Vérifiez si l'exemplaire est disponible
+    SELECT NOT EXISTS (
+        SELECT 1 FROM Emprunt WHERE idExemplaire = idExemplaireParam AND NOT (statutEmprunt = 'R_ANNULE' OR statutEmprunt = 'E_TERMINE')
+    ) INTO exemplaireDisponible;
 
-    -- Si un exemplaire est disponible, créez un nouvel emprunt avec le statut 'E_ENCOURS'
-    IF idExemplaireDisponible IS NOT NULL THEN
+    -- Si l'exemplaire est disponible, créez un nouvel emprunt avec le statut 'E_ENCOURS'
+    IF exemplaireDisponible THEN
         INSERT INTO Emprunt (idUtilisateur, dateReservation, dateEmprunt, dateRetourPrevue, statutEmprunt, idExemplaire)
-        VALUES (idUtilisateurParam, CURRENT_DATE, CURRENT_DATE, CURRENT_DATE + INTERVAL '14 days', 'E_ENCOURS', idExemplaireDisponible);
-        -- Sinon, créez un nouvel emprunt avec le statut 'R_ENATTENTE'
+        VALUES (idUtilisateurParam, CURRENT_DATE, CURRENT_DATE, CURRENT_DATE + INTERVAL '14 days', 'E_ENCOURS', idExemplaireParam);
+        -- Sinon, créez un nouvel emprunt avec le statut 'R_ATTENTE'
     ELSE
         INSERT INTO Emprunt (idUtilisateur, dateReservation, dateEmprunt, dateRetourPrevue, statutEmprunt, idExemplaire)
-        VALUES (idUtilisateurParam, CURRENT_DATE, NULL, NULL, 'R_ENATTENTE', idExemplaireDisponible);
+        VALUES (idUtilisateurParam, CURRENT_DATE, NULL, NULL, 'R_ATTENTE', idExemplaireParam);
     END IF;
 END;
 $$;
 
-
+CREATE OR REPLACE PROCEDURE annulerReservation(IN idUtilisateurParam INTEGER, IN idExemplaireParam INTEGER)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Mettez à jour le statut de la réservation en 'R_ANNULE'
+    UPDATE Emprunt
+    SET statutEmprunt = 'R_ANNULE'
+    WHERE idUtilisateur = idUtilisateurParam AND idExemplaire = idExemplaireParam AND statutEmprunt = 'R_ATTENTE';
+END;
+$$;
 
 CREATE OR REPLACE PROCEDURE ajouterTypes(nouveaux_types VARCHAR[], designations_auteur VARCHAR[]) AS
 $$
@@ -368,13 +329,13 @@ VALUES ('Speak & Spell', 1, 1, 1981, 5,
        ('Music For The Masses', 1, 1, 1987, 5,
         'https://ia800609.us.archive.org/24/items/mbid-8d059e75-d9bb-4d90-97a9-1cb6ed7472c6/mbid-8d059e75-d9bb-4d90-97a9-1cb6ed7472c6-9552817368.jpg',
         false),
-       ('Violator', 1, 1, 1990, 5,
+       ('Violator', 1, 1, 1990, 7,
         'https://ia600600.us.archive.org/35/items/mbid-5454efa9-445a-4b73-8d16-e9fdbf022119/mbid-5454efa9-445a-4b73-8d16-e9fdbf022119-18529866710.jpg',
         false),
        ('Songs Of Faith And Devotion', 1, 1, 1993, 5,
         'https://ia804706.us.archive.org/15/items/mbid-13ee7e6b-2f9a-30af-b4bb-2c2dbde12c44/mbid-13ee7e6b-2f9a-30af-b4bb-2c2dbde12c44-20967138423.jpg',
         false),
-       ('Ultra', 1, 1, 1997, 5,
+       ('Ultra', 1, 1, 1997, 6,
         'https://ia801307.us.archive.org/18/items/mbid-3e7e0454-c2b2-3976-b3d1-c9cdacff51ef/mbid-3e7e0454-c2b2-3976-b3d1-c9cdacff51ef-11289364430.jpg',
         false),
        ('Exciter', 1, 1, 2001, 5,
@@ -397,14 +358,14 @@ VALUES ('Speak & Spell', 1, 1, 1981, 5,
         false),
        ('ULTRA', 1, 1, 2015, 0,
         'https://images.genius.com/0b8290c44d2de7466237e6797139a5f3.1000x1000x1.jpg', false),
-       ('Pulp Fiction', 2, 4, 1994, 5, '', false),
-       ('The Big Lebowski', 2, 4, 1998, 5, '', false),
-       ('1989', 1, 3, 2014, 5, '', false),
-       ('Scorpion', 1, 3, 2018, 5, '', false),
-       ('Millennium', 2, 4, 2005, 5, '', false),
-       ('Mad Max: Fury Road', 2, 4, 2015, 5, '', false),
-       ('Game of Thrones', 3, 3, 2011, 5, '', false),
-       ('Abbey Road', 1, 5, 1969, 5, '', false),
+       ('Pulp Fiction', 2, 4, 1994, 4, '', false),
+       ('The Big Lebowski', 2, 4, 1998, 3, '', false),
+       ('1989', 1, 3, 2014, 4, '', false),
+       ('Scorpion', 1, 3, 2018, 3, '', false),
+       ('Millennium', 2, 4, 2005, 2, '', false),
+       ('Mad Max: Fury Road', 2, 4, 2015, 4, '', false),
+       ('Game of Thrones', 3, 3, 2011, 2, '', false),
+       ('Abbey Road', 1, 5, 1969, 4, '', false),
        ('Le Seigneur des Anneaux', 4, 6, 1954, 5, '', false),
        ('Star Wars, épisode IV : Un nouvel espoir', 2, 7, 1977, 5, '', false),
        ('Le Seigneur des Anneaux : La Communauté de l''Anneau', 2, 6, 2001, 5, '', false);
@@ -481,4 +442,15 @@ VALUES (2, 1),
 INSERT INTO Utilisateur (emailUtilisateur, nomUtilisateur, prenomUtilisateur, adresseUtilisateur,
                          numTelephoneUtilisateur, mdpUtilisateur, dateNaissanceUtilisateur, typeProfil)
 VALUES ('davegahan@local.int', 'Gahan', 'Dave', 'Basildon', '20231981',
-        '$2y$10$Xa6bJiw4K9Ux8FUiz7r0n.DLed8imaKPDteU5Wgar7KD1vgQm1FTO', '1962-05-09', 'ADMINISTRATEUR');
+        '$2y$10$Xa6bJiw4K9Ux8FUiz7r0n.DLed8imaKPDteU5Wgar7KD1vgQm1FTO', '1962-05-09', 'ADMINISTRATEUR'),
+       ('martingore@local.int', 'Gore', 'Martin Lee', 'Basildon', '20221982',
+        '$2y$10$Xa6bJiw4K9Ux8FUiz7r0n.DLed8imaKPDteU5Wgar7KD1vgQm1FTO', '1962-07-23', 'ADMINISTRATEUR'),
+       ('andrewfletcher@local.int', 'Fletcher', 'Andrew', 'Basildon', '20211983',
+        '$2y$10$Xa6bJiw4K9Ux8FUiz7r0n.DLed8imaKPDteU5Wgar7KD1vgQm1FTO', '1961-07-08', 'ADMINISTRATEUR'),
+       ('alanwilder@local.int', 'Wilder', 'Alan', 'Basildon', '20201984',
+        '$2y$10$Xa6bJiw4K9Ux8FUiz7r0n.DLed8imaKPDteU5Wgar7KD1vgQm1FTO', '1959-06-01', 'ADMINISTRATEUR');
+
+INSERT INTO ExemplaireMedia (idMedia) VALUES (7),(7),(7);
+
+
+

@@ -1,18 +1,11 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper;
 
-import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity.AuteurEntity;
-import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity.NationaliteAuteurEntity;
-import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.AuteurJson;
-import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.NationaliteAuteurJson;
-import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Auteur;
-import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.NationaliteAuteur;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.sql.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
 
 @Mapper
 public interface UtilsMapper {
@@ -26,6 +19,10 @@ public interface UtilsMapper {
     }
     default Date map(String value){
         return Date.valueOf(value);
+    }
+    default String map(Date value){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(value);
     }
 
 }

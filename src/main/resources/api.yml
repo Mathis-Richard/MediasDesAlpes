@@ -331,7 +331,15 @@ paths:
       summary: Récupère les auteurs
       tags:
         - auteurs
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Auteur'
       operationId: get-auteurs
     parameters: []
   '/auteurs/{idAuteur}':
@@ -372,6 +380,28 @@ paths:
           description: OK
         '404':
           description: Not Found
+  '/auteurs/medias/{idMedia}':
+    parameters:
+      - schema:
+          type: string
+        name: idMedia
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Auteur'
+        '404':
+          description: Not Found
+      operationId: get-auteurs-medias-idMedia
   /auteurs/new:
     post:
       summary: Ajoute un nouvel auteur
@@ -383,7 +413,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Utilisateur'
+              $ref: '#/components/schemas/Auteur'
       tags:
         - auteurs
   '/emprunts/start/{idExemplaire}':
@@ -394,10 +424,22 @@ paths:
         in: path
         required: true
     post:
-      summary:
+      summary: null
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
       operationId: post-emprunt-start
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idUtilisateur:
+                  type: string
   '/emprunts/return/{idExemplaire}':
     parameters:
       - schema:
@@ -406,7 +448,7 @@ paths:
         in: path
         required: true
     post:
-      summary:
+      summary: null
       tags: []
       responses:
         '200':
@@ -414,6 +456,144 @@ paths:
         '404':
           description: Not Found
       operationId: post-emprunt-return
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idUtilisateur:
+                  type: string
+  '/emprunts/cancel/{idExemplaire}':
+    parameters:
+      - schema:
+          type: string
+        name: idExemplaire
+        in: path
+        required: true
+    post:
+      summary: null
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      operationId: post-emprunt-cancel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idUtilisateur:
+                  type: string
+  /emprunts:
+    get:
+      summary: ''
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Emprunt'
+      operationId: get-emprunts
+  /emprunts/attente:
+    get:
+      summary: ''
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Emprunt'
+      operationId: get-emprunts-attente
+  /emprunts/encours:
+    get:
+      summary: ''
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Emprunt'
+      operationId: get-emprunts-encours
+  /emprunts/termine:
+    get:
+      summary: ''
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Emprunt'
+      operationId: get-emprunts-termine
+  /emprunts/annule:
+    get:
+      summary: ''
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Emprunt'
+      operationId: get-emprunts-annule
+  '/utilisateurs/id/{idUtilisateur}':
+    parameters:
+      - schema:
+          type: string
+        name: idUtilisateur
+        in: path
+        required: true
+    patch:
+      summary: Met à jour un utilisateur avec son ID
+      operationId: patch-utilisateur-by-id
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Utilisateur'
+    get:
+      summary: Récupère un utilisateur avec son ID
+      operationId: get-utilisateur-by-id
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utilisateur'
+    delete:
+      summary: Supprime un utilisateur avec son ID
+      operationId: delete-utilisateur-by-id
+      responses:
+        '200':
+          description: OK
 components:
   schemas:
     Utilisateur:
@@ -539,5 +719,7 @@ components:
         dateRetourPrevue:
           type: string
         dateRetourReelle:
+          type: string
+        statutEmprunt:
           type: string
   securitySchemes: {}

@@ -23,6 +23,11 @@ public interface AuteurMapper {
     @Mapping(source = "prenomauteur",target = "prenom")
     AuteurJson mapToJson(Auteur auteur);
 
+    @Mapping(target = "nomauteur", source = "nom")
+    @Mapping(target = "prenomauteur",source = "prenom")
+    Auteur mapToModel(AuteurJson auteurJson);
+
+
     List<AuteurJson> mapToJson(List<Auteur> auteur);
 
     NationaliteAuteurJson mapToJson(NationaliteAuteur nationaliteAuteur);

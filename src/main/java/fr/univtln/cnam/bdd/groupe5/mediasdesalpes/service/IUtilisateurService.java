@@ -12,13 +12,19 @@ public interface IUtilisateurService {
 
     Utilisateur getUserByEmail(String email);
 
+    Utilisateur getUserById(Integer id);
+
     Integer postNewUtilisateur(Utilisateur u);
 
     Integer deleteUtilisateurByEmail(String emailUtilisateur);
 
+    Integer deleteUtilisateurById(Integer id);
+
     List<Utilisateur> getUtilisateurs();
 
     Integer patchUtilisateurByEmail(String emailUtilisateur, Utilisateur utilisateur);
+
+    Integer patchUtilisateurById(Integer id, Utilisateur utilisateur);
 
     List<Utilisateur> postUtilisateursWithLimit(Integer limit, Integer page);
 }

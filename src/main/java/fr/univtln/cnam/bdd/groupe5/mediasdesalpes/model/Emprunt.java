@@ -1,57 +1,35 @@
-package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity;
+package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity.EmpruntEntity;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity.ExemplaireMediaEntity;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.entity.UtilisateurEntity;
 
 import java.time.LocalDate;
 
-@Entity(name = "Emprunt")
-@Table(name = "emprunt")
-public class EmpruntEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idemprunt", nullable = false)
+public class Emprunt {
+
     private Integer id;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idutilisateur", nullable = false)
     private UtilisateurEntity idutilisateur;
-
-    @Column(name = "datereservation")
     private LocalDate datereservation;
-
-    @NotNull
-    @Column(name = "dateemprunt", nullable = false)
     private LocalDate dateemprunt;
-
-    @NotNull
-    @Column(name = "dateretourprevue", nullable = false)
     private LocalDate dateretourprevue;
-
-    @Column(name = "dateretourreelle")
     private LocalDate dateretourreelle;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idexemplaire", nullable = false)
     private ExemplaireMediaEntity idexemplaire;
 
-
     public enum StatutEmprunt {
-        R_ATTENTE,R_ANNULE,E_ENCOURS,E_TERMINE,R_RETARD
-    }
-    @Column(name = "statutemprunt")
-    @Enumerated(EnumType.STRING)
-    private StatutEmprunt statutemprunt;
-
-    public StatutEmprunt getStatutemprunt() {
-        return statutemprunt;
+        R_ATTENTE, R_ANNULE, E_ENCOURS, E_TERMINE, R_RETARD
     }
 
-    public void setStatutemprunt(StatutEmprunt statutemprunt) {
-        this.statutemprunt = statutemprunt;
+    private EmpruntEntity.StatutEmprunt statut;
+
+    public EmpruntEntity.StatutEmprunt getStatut() {
+        return statut;
     }
+
+    public void setStatut(EmpruntEntity.StatutEmprunt statut) {
+        this.statut = statut;
+    }
+
 
     public Integer getId() {
         return id;
@@ -110,3 +88,4 @@ public class EmpruntEntity {
     }
 
 }
+

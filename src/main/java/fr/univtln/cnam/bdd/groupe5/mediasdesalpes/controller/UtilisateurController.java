@@ -34,8 +34,19 @@ public class UtilisateurController implements UtilisateursApi {
     }
 
     @Override
+    public ResponseEntity<Void> deleteUtilisateurById(String idUtilisateur) {
+        Integer i = utilisateurService.deleteUtilisateurById(Integer.valueOf(idUtilisateur));
+        return i > 0 ? ResponseEntity.ok(null) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @Override
     public ResponseEntity<UtilisateurJson> getUtilisateurByEmail(String emailUtilisateur) {
         return ResponseEntity.ok(UtilisateurMapper.INSTANCE.mapToJson(utilisateurService.getUserByEmail(emailUtilisateur)));
+    }
+
+    @Override
+    public ResponseEntity<UtilisateurJson> getUtilisateurById(String idUtilisateur) {
+        return ResponseEntity.ok(UtilisateurMapper.INSTANCE.mapToJson(utilisateurService.getUserById(Integer.valueOf(idUtilisateur))));
     }
 
     @Override
@@ -50,6 +61,17 @@ public class UtilisateurController implements UtilisateursApi {
         nouveau.setTypeprofil(tp);
         nouveau.setMdputilisateur(utilisateurService.getUserByEmail(emailUtilisateur).getMdputilisateur());
         Integer i = utilisateurService.patchUtilisateurByEmail(emailUtilisateur,nouveau);
+        return i > 0 ? ResponseEntity.ok(null) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @Override
+    public ResponseEntity<Void> patchUtilisateurById(String idUtilisateur, UtilisateurJson utilisateurJson) {
+        Integer idUtilisateurInt = Integer.valueOf(idUtilisateur);
+        Utilisateur.TypeProfil tp = utilisateurJson.getTypeProfilUtilisateur().equals("ADMINISTRATEUR") ? Utilisateur.TypeProfil.ADMINISTRATEUR : Utilisateur.TypeProfil.UTILISATEUR;
+        Utilisateur nouveau = UtilisateurMapper.INSTANCE.map(utilisateurJson);
+        nouveau.setTypeprofil(tp);
+        nouveau.setMdputilisateur(utilisateurService.getUserById(idUtilisateurInt).getMdputilisateur());
+        Integer i = utilisateurService.patchUtilisateurById(idUtilisateurInt,nouveau);
         return i > 0 ? ResponseEntity.ok(null) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
