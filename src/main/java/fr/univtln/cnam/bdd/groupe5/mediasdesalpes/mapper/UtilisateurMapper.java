@@ -24,6 +24,7 @@ public interface UtilisateurMapper {
     @Mapping(target = "adresseUtilisateur", source = "adresseutilisateur")
     @Mapping(target = "numTelephoneUtilisateur", source = "numtelephoneutilisateur")
     @Mapping(target = "dateNaissanceUtilisateur", source = "datenaissanceutilisateur")
+    @Mapping(target = "typeProfilUtilisateur",expression = "java(utilisateur.getTypeprofil().toString())")
     UtilisateurJson mapToJson(Utilisateur utilisateur);
     Utilisateur mapToModel(UtilisateurEntity utilisateurEntity);
 
