@@ -167,31 +167,83 @@ CREATE OR REPLACE TRIGGER majDisponibilite
     FOR EACH ROW
 EXECUTE PROCEDURE setDisponibiliteMedia();
 
-CREATE OR REPLACE FUNCTION verifierDisponibiliteAvantEmprunt() RETURNS TRIGGER AS
-$$
+CREATE OR REPLACE FUNCTION verifierEmpruntsAvantInsertion() RETURNS TRIGGER AS $$
 DECLARE
-    exemplaireDisponible BOOLEAN;
+    toutesCopiesReserveesOuEmpruntees BOOLEAN;
 BEGIN
-    SELECT EXISTS (SELECT 1
-                   FROM ExemplaireMedia
-                   WHERE idMedia = NEW.idMedia
-                     AND idExemplaire NOT IN
-                         (SELECT idExemplaire FROM Emprunt WHERE statutEmprunt NOT IN ('R_ANNULE', 'E_TERMINE')))
-    INTO exemplaireDisponible;
+    -- Vérifiez si tous les exemplaires du média sont empruntés ou réservés (sauf si la réservation est annulée)
+    SELECT NOT EXISTS (
+        SELECT 1 FROM ExemplaireMedia WHERE idMedia = NEW.idMedia AND idExemplaire NOT IN (
+            SELECT idExemplaire FROM Emprunt WHERE NOT (statutEmprunt = 'R_ANNULE' OR statutEmprunt = 'E_TERMINE')
+        )
+    ) INTO toutesCopiesReserveesOuEmpruntees;
 
-    IF NOT exemplaireDisponible THEN
-        RAISE EXCEPTION 'Aucun exemplaire du média % n''est disponible.', NEW.idMedia;
+    -- Si tous les exemplaires sont empruntés ou réservés, créez un nouvel emprunt avec le statut 'R_ENATTENTE'
+    IF toutesCopiesReserveesOuEmpruntees THEN
+        INSERT INTO Emprunt (idUtilisateur, dateReservation, dateEmprunt, dateRetourPrevue, statutEmprunt, idExemplaire)
+        VALUES (NEW.idUtilisateur, CURRENT_DATE, NULL, NULL, 'R_ENATTENTE', NEW.idExemplaire);
     END IF;
 
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER verifierDisponibiliteAvantEmprunt
-    BEFORE INSERT
-    ON Emprunt
-    FOR EACH ROW
-EXECUTE PROCEDURE verifierDisponibiliteAvantEmprunt();
+CREATE TRIGGER empruntAvantInsertion
+    BEFORE INSERT ON Emprunt
+    FOR EACH ROW EXECUTE PROCEDURE verifierEmpruntsAvantInsertion();
+
+CREATE OR REPLACE PROCEDURE retourExemplaire(IN idExemplaireParam INTEGER)
+    LANGUAGE plpgsql
+AS $$
+BEGIN
+    -- Mettez à jour le statut de l'emprunt en 'E_TERMINE' et la date de retour réelle
+    UPDATE Emprunt
+    SET statutEmprunt = 'E_TERMINE',
+        dateRetourReelle = CURRENT_DATE
+    WHERE idExemplaire = idExemplaireParam AND statutEmprunt = 'E_ENCOURS';
+
+    -- Trouvez la première réservation en attente pour le média
+    WITH reservationEnAttente AS (
+        SELECT idEmprunt
+        FROM Emprunt
+        WHERE idExemplaire = idExemplaireParam AND statutEmprunt = 'R_ENATTENTE'
+        ORDER BY dateReservation
+        LIMIT 1
+    )
+    -- Si une réservation en attente existe, mettez à jour son statut en 'R_CONFIRME'
+    UPDATE Emprunt
+    SET statutEmprunt = 'R_CONFIRME'
+    WHERE idEmprunt IN (TABLE reservationEnAttente);
+END;
+$$;
+
+CREATE OR REPLACE PROCEDURE empruntExemplaire(IN idUtilisateurParam INTEGER)
+    LANGUAGE plpgsql
+AS $$
+DECLARE
+    idExemplaireDisponible INTEGER;
+BEGIN
+    -- Trouvez le premier exemplaire disponible
+    SELECT idExemplaire INTO idExemplaireDisponible
+    FROM ExemplaireMedia
+    WHERE idExemplaire NOT IN (
+        SELECT idExemplaire FROM Emprunt WHERE NOT (statutEmprunt = 'R_ANNULE' OR statutEmprunt = 'E_TERMINE')
+    )
+    LIMIT 1;
+
+    -- Si un exemplaire est disponible, créez un nouvel emprunt avec le statut 'E_ENCOURS'
+    IF idExemplaireDisponible IS NOT NULL THEN
+        INSERT INTO Emprunt (idUtilisateur, dateReservation, dateEmprunt, dateRetourPrevue, statutEmprunt, idExemplaire)
+        VALUES (idUtilisateurParam, CURRENT_DATE, CURRENT_DATE, CURRENT_DATE + INTERVAL '14 days', 'E_ENCOURS', idExemplaireDisponible);
+        -- Sinon, créez un nouvel emprunt avec le statut 'R_ENATTENTE'
+    ELSE
+        INSERT INTO Emprunt (idUtilisateur, dateReservation, dateEmprunt, dateRetourPrevue, statutEmprunt, idExemplaire)
+        VALUES (idUtilisateurParam, CURRENT_DATE, NULL, NULL, 'R_ENATTENTE', idExemplaireDisponible);
+    END IF;
+END;
+$$;
+
+
 
 CREATE OR REPLACE PROCEDURE ajouterTypes(nouveaux_types VARCHAR[], designations_auteur VARCHAR[]) AS
 $$
@@ -231,7 +283,18 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+CREATE OR REPLACE FUNCTION checkEmpruntBeforeDelete() RETURNS TRIGGER AS $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM Emprunt WHERE idExemplaire = OLD.idExemplaire AND NOT (statutEmprunt = 'R_ANNULE' OR statutEmprunt = 'E_TERMINE')) THEN
+        RAISE EXCEPTION 'Cet exemplaire est actuellement emprunté et ne peut pas être supprimé';
+    END IF;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
 
+CREATE TRIGGER exemplaire_before_delete
+    BEFORE DELETE ON ExemplaireMedia
+    FOR EACH ROW EXECUTE PROCEDURE checkEmpruntBeforeDelete();
 ------ INSERTIONS ------
 
 INSERT INTO NationaliteAuteur(designation)

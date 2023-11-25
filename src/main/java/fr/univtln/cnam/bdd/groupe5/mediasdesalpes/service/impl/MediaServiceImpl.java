@@ -1,13 +1,15 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.service.impl;
 
-import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper.AuteurMapper;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper.MediaMapper;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.GenreMedia;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Media;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.TypeMedia;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.repository.IAuteurRepository;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.repository.IGenreRepository;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.repository.IMediaRepository;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.repository.ITypeRepository;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.service.IMediaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +22,14 @@ public class MediaServiceImpl implements IMediaService {
     private final IMediaRepository mediaRepository;
     private final IAuteurRepository auteurRepository;
 
-    public MediaServiceImpl(IMediaRepository mediaRepository, IAuteurRepository auteurRepository) {
+    private final IGenreRepository genreRepository;
+    private final ITypeRepository typeRepository;
+
+    public MediaServiceImpl(IMediaRepository mediaRepository, IAuteurRepository auteurRepository, IGenreRepository genreRepository, ITypeRepository typeRepository) {
         this.mediaRepository = mediaRepository;
         this.auteurRepository = auteurRepository;
+        this.genreRepository = genreRepository;
+        this.typeRepository = typeRepository;
     }
 
     @Override
@@ -76,11 +83,11 @@ public class MediaServiceImpl implements IMediaService {
 
     @Override
     public List<TypeMedia> getTypes() {
-        return MediaMapper.INSTANCE.mapTypeToModel(mediaRepository.getTypesMedia());
+        return MediaMapper.INSTANCE.mapTypeToModel(typeRepository.getTypesMedia());
     }
 
     @Override
     public List<GenreMedia> getGenres() {
-        return MediaMapper.INSTANCE.mapGenreToModel(mediaRepository.getGenresMedia());
+        return MediaMapper.INSTANCE.mapGenreToModel(genreRepository.getGenresMedia());
     }
 }

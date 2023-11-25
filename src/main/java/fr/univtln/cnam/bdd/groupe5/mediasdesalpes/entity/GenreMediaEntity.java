@@ -23,6 +23,15 @@ public class GenreMediaEntity {
     @OneToMany(mappedBy = "idgenre")
     private Set<MediaEntity> media = new LinkedHashSet<>();
 
+    public GenreMediaEntity(Integer id, String designation) {
+        this.id = id;
+        this.designation = designation;
+    }
+
+    public GenreMediaEntity() {
+
+    }
+
     public Set<MediaEntity> getMedia() {
         return media;
     }

@@ -10,6 +10,12 @@ import java.util.Set;
 @Entity(name = "Typemedia")
 @Table(name = "typemedia")
 public class TypeMediaEntity {
+    public TypeMediaEntity(Integer id, String designationtype, String designationauteur) {
+        this.id = id;
+        this.designationtype = designationtype;
+        this.designationauteur = designationauteur;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idtype", nullable = false)
@@ -27,6 +33,10 @@ public class TypeMediaEntity {
 
     @OneToMany(mappedBy = "idtype")
     private Set<MediaEntity> media = new LinkedHashSet<>();
+
+    public TypeMediaEntity() {
+
+    }
 
     public Set<MediaEntity> getMedia() {
         return media;

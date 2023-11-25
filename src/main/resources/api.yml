@@ -122,6 +122,29 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Media'
+  /medias/classement:
+    get:
+      summary: Récupère le classement des médias
+      tags:
+        - medias
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Media'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    media:
+                      type: string
+      operationId: get-medias-classement
   /utilisateurs:
     parameters: []
     get:
@@ -167,24 +190,6 @@ paths:
                   type: integer
                 page:
                   type: integer
-  /connexion:
-    post:
-      summary: Connecte un utilisateur
-      operationId: post-connexion
-      responses:
-        '200':
-          description: OK
-        '404':
-          description: L'utilisateur n'existe pas ou le mot de passe est éronné
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ConnexionForm'
-        description: ''
-      tags:
-        - connexion
-    parameters: []
   '/utilisateurs/{emailUtilisateur}':
     parameters:
       - schema:
@@ -254,29 +259,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Utilisateur'
-  /medias/classement:
-    get:
-      summary: Récupère le classement des médias
       tags:
-        - medias
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Media'
-            application/xml:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    media:
-                      type: string
-      operationId: get-medias-classement
+        - utilisateurs
   /types:
     get:
       summary: Récupère tous les types de médias
@@ -308,6 +292,128 @@ paths:
                   $ref: '#/components/schemas/GenreMedia'
       operationId: get-genres
     parameters: []
+  '/exemplaires/add/{idMedia}':
+    parameters:
+      - schema:
+          type: string
+        name: idMedia
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags:
+        - exemplaires
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      operationId: get-new-exemplaire
+  '/exemplaires/del/{idExemplaire}':
+    parameters:
+      - schema:
+          type: string
+        name: idExemplaire
+        in: path
+        required: true
+    delete:
+      summary: ''
+      operationId: delete-exemplaire-by-id
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      tags:
+        - exemplaires
+  /auteurs:
+    get:
+      summary: Récupère les auteurs
+      tags:
+        - auteurs
+      responses: {}
+      operationId: get-auteurs
+    parameters: []
+  '/auteurs/{idAuteur}':
+    parameters:
+      - schema:
+          type: string
+        name: idAuteur
+        in: path
+        required: true
+    get:
+      summary: Récupère un auteur spécifique
+      tags:
+        - auteurs
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      operationId: get-auteur-by-id
+    patch:
+      summary: Met à jour un auteur spécifique
+      operationId: patch-auteur-by-id
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auteur'
+    delete:
+      summary: Supprime un auteur spécifique
+      operationId: delete-auteur-by-id
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+  /auteurs/new:
+    post:
+      summary: Ajoute un nouvel auteur
+      operationId: post-new-auteur
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Utilisateur'
+      tags:
+        - auteurs
+  '/emprunts/start/{idExemplaire}':
+    parameters:
+      - schema:
+          type: string
+        name: idExemplaire
+        in: path
+        required: true
+    post:
+      summary:
+      tags: []
+      responses: {}
+      operationId: post-emprunt-start
+  '/emprunts/return/{idExemplaire}':
+    parameters:
+      - schema:
+          type: string
+        name: idExemplaire
+        in: path
+        required: true
+    post:
+      summary:
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      operationId: post-emprunt-return
 components:
   schemas:
     Utilisateur:
@@ -410,4 +516,28 @@ components:
           type: string
       x-tags:
         - connexion
+    ExemplaireMedia:
+      title: ExemplaireMedia
+      type: object
+      properties:
+        id:
+          type: integer
+        idMedia:
+          type: integer
+    Emprunt:
+      title: Emprunt
+      type: object
+      properties:
+        idExemplaire:
+          type: integer
+        idUtilisateur:
+          type: integer
+        dateReservation:
+          type: string
+        dateEmprunt:
+          type: string
+        dateRetourPrevue:
+          type: string
+        dateRetourReelle:
+          type: string
   securitySchemes: {}
