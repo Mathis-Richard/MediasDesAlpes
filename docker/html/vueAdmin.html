@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css">
+          href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/dataTables.foundation.min.css">
     <link rel="stylesheet" type="text/css" href="vueScretaire.css">
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.7.0.js"></script>
     <script type="text/javascript" charset="utf8"
-        src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+            src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" charset="utf8"
-        src="https://cdn.datatables.net/1.13.7/js/dataTables.foundation.min.js"></script>
+            src="https://cdn.datatables.net/1.13.7/js/dataTables.foundation.min.js"></script>
     <script type="text/javascript" charset="utf8" src="vueSecretaire.js"></script>
     <link rel="stylesheet" type="text/css" href="createUserForm.css">
     <title>Vue Admin</title>
@@ -21,108 +21,123 @@
 </head>
 
 <body>
-    <div class="buttonContainer">
-        <button class="button" id="buttonA">Administration des comptes</button>
-        <button class="button" id="buttonB">Classement Medias</button>
-        <button class="button" id="buttonC">Rajouter des Medias</button>
+<div class="buttonContainer">
+    <button class="button" id="buttonA">Administration des comptes</button>
+    <button class="button" id="buttonB">Classement Medias</button>
+    <button class="button" id="buttonC">Rajouter des Medias</button>
+</div>
+<div class="viewContainer">
+    <div class="topButtons" id="topButtonsContainer">
+
     </div>
-    <div class="viewContainer">
-        <div class="topButtons" id="topButtonsContainer">
+    <div id="vueCreateMedia">
+        <div id="searchInput"></div>
+        <script>
+            document.getElementById('buttonA').addEventListener('click', () => {
+                const createButton = document.createElement('button');
+                const modifyButton = document.createElement('button');
 
-        </div>
-        <div id="vueCreateMedia">
-            <div id="searchInput"></div>
-            <script>
-                document.getElementById('buttonA').addEventListener('click', () => {
-                    const createButton = document.createElement('button');
-                    const modifyButton = document.createElement('button');
-                    if (document.getElementById('vueCreateMedia').children.length > 0) document.getElementById('vueCreateMedia').innerHTML = '';
-                    if (!document.getElementById('isTopButtons')) {
-                        createButton.classList.add('topButton', 'button');
-                        createButton.id = 'isTopButtons';
-                        createButton.innerText = "CREER UN COMPTE UTILISATEUR";
-                        modifyButton.classList.add('topButton', 'button');
-                        modifyButton.id = 'isTopButtons';
-                        modifyButton.innerText = "MODIFIER UN COMPTE UTILISATEUR";
-                        document.getElementById('topButtonsContainer').append(createButton, modifyButton);
+                if (document.getElementById('vueCreateMedia').children.length > 0) {
+                    document.getElementById('vueCreateMedia').innerHTML = '';
+                }
+
+                if (!document.getElementById('isTopButtons')) {
+                    createButton.classList.add('topButton', 'button');
+                    createButton.id = 'isTopButtons';
+                    createButton.innerText = "CREER UN COMPTE UTILISATEUR";
+
+                    modifyButton.classList.add('topButton', 'button');
+                    modifyButton.id = 'isTopButtons';
+                    modifyButton.innerText = "MODIFIER UN COMPTE UTILISATEUR";
+
+                    document.getElementById('topButtonsContainer').append(createButton, modifyButton);
+                }
+
+                createButton.addEventListener('click', () => {
+                    createUserAccountForm();
+                });
+
+                modifyButton.addEventListener('click', () => {
+                    modifyUserAccountForm();
+                });
+            });
+
+            document.getElementById('buttonB').addEventListener('click', () => {
+                let mapGenre = [];
+                let mapType = [];
+                let rowData = [];
+
+                fetch('http://localhost:9191/genres', {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
                     }
-
-                    createButton.addEventListener('click', () => {
-                        createUserAccountForm();
-                    })
-
-                    modifyButton.addEventListener('click', () => {
-                        modifyUserAccountForm();
-                    })
-
                 })
-
-                document.getElementById('buttonB').addEventListener('click', () => {
-                    let mapGenre = [];
-                    let mapType = [];
-                    fetch('http://localhost:9191/genres', {
-                        method: 'GET',
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    }).then(response => response.json())
-                        .then(data => {
-                            // Traitez les données ici
-                            mapGenre = data;
-                        }).then(
-
-                        fetch('http://localhost:9191/types', {
+                    .then(response => response.json())
+                    .then(data => {
+                        mapGenre = data;
+                    })
+                    .then(() => {
+                        return fetch('http://localhost:9191/types', {
                             method: 'GET',
                             headers: {
                                 'Accept': 'application/json'
                             }
-                        }).then(response => response.json())
-                            .then(data => {
-                                // Traitez les données ici
-                                mapType =  data;
-                            }).then(() => {
-
-                            // Effectuer une requête GET
-                            fetch('http://localhost:9191/medias/classement', {
+                        });
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        mapType = data;
+                    })
+                    .then(() => {
+                        return fetch('http://localhost:9191/medias/classement', {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        let tempData = updateDataWithMappings(data, mapType, mapGenre);
+                        rowData = convertirTableau(tempData);
+                    })
+                    .then(() => {
+                        const fetchPromises = [];
+                        for (let line in rowData) {
+                            const fetchPromise = fetch(`http://localhost:9191/auteurs/medias/${rowData[line][0]}`, {
                                 method: 'GET',
                                 headers: {
                                     'Accept': 'application/json'
                                     // Vous pouvez ajouter d'autres en-têtes si nécessaire
                                 }
                             })
-                                .then(response => {
-                                    // Vérifier si la requête a réussi (statut 200 OK)
-                                    if (!response.ok) {
-                                        throw new Error('La requête a échoué avec le statut ' + response.status);
-                                    }
-                                    // Convertir la réponse en JSON
-                                    return response.json();
-                                })
-                                .then(data => {
-                                    let tempData = updateDataWithMappings(data,mapType, mapGenre );
-
-                                    let columnNames = ["idMedia", "Titre", "Type", "Genre", "anneePublicationSortie", "note", "img"];
-
-                                    let rowData = convertirTableau(tempData);
-                                    createReadTable(columnNames, rowData);
-                                })
-                                .catch(error => {
-                                    // Gérer les erreurs ici
-                                    console.error('Erreur lors de la requête:', error);
+                                .then(response => response.json())
+                                .then((data) => {
+                                    rowData[line].splice(4, 0, concatenerNomsPrenoms(data));
                                 });
-                        }))
-                });
+
+                            fetchPromises.push(fetchPromise);
+                        }
+
+                        Promise.all(fetchPromises)
+                            .then(() => {
+                                let columnNames = ["idMedia", "Titre", "Type", "Genre", "Auteur", "anneePublicationSortie", "note", "img"];
+                                createReadTable(columnNames, rowData);
+                            })
+                    })
+            });
 
 
-                document.getElementById('buttonC').addEventListener('click', () => {
-                    createMediaForm();
-                })
+            document.getElementById('buttonC').addEventListener('click', () => {
+                createMediaForm();
+            })
 
 
-            </script>
+        </script>
 
-        </div>
     </div>
+</div>
 
 
 </body>

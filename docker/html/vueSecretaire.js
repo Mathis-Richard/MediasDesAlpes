@@ -5,9 +5,7 @@ function generateTable(columnNames, rowData) {
     columnNames.forEach(column => {
         tableHTML += `<th>${column}</th>\n`;
     });
-
     tableHTML += '</tr>\n</thead>\n<tbody>\n';
-
     // Ajouter les données des lignes
     rowData.forEach(row => {
         tableHTML += '<tr>\n';
@@ -18,7 +16,6 @@ function generateTable(columnNames, rowData) {
     });
 
     tableHTML += '</tbody>\n</table>';
-
     return tableHTML;
 }
 
@@ -235,8 +232,6 @@ function createUserAccountForm() {
         document.getElementById('vueCreateMedia').appendChild(form);
     }
 }
-
-
 // Fonction utilitaire pour créer un label
 function createLabel(forAttribute, textContent) {
     var label = document.createElement("label");
@@ -291,7 +286,9 @@ function createReadTable(columnNames, rowData) {
 
     // Initialiser DataTables
     $(document).ready(function () {
-        $('#myTable').DataTable();
+        $('#myTable').DataTable({
+            "order": []
+        });
     });
 }
 
@@ -524,6 +521,16 @@ function updateDataWithMappings(data, typeMap, genreMap) {
         return updatedItem;
     });
 }
+
+function concatenerNomsPrenoms(tableau) {
+    // Utilisation de la méthode map pour créer un nouveau tableau avec les noms et prénoms concaténés
+    const nomsPrenomsConcatenes = tableau.map(personne => `${personne.nom} ${personne.prenom}`);
+
+    // Utilisation de la méthode join pour concaténer tous les noms et prénoms en une seule chaîne
+    const resultat = nomsPrenomsConcatenes.join(', ');
+    return resultat;
+}
+
 
 function refreshView() {
     const topButtons = document.getElementById('topButtonsContainer');
