@@ -39,10 +39,10 @@ public interface IMediaRepository extends JpaRepository<MediaEntity,Long> {
             nativeQuery = true)
     Integer updateMedia(Integer id, String titre, Integer idType, Integer idGenre, Integer anneePublicationSortie, String imgMedia);
 
-    @Query(value = "SELECT * FROM typemedia WHERE idtype = :id",
+    @Query(value = "SELECT idtype, designationtype, designationauteur FROM typemedia",
             nativeQuery = true)
-    TypeMediaEntity getTypeMedia(Integer id);
-    @Query(value = "SELECT * FROM genremedia WHERE idgenre = :id",
+    List<TypeMediaEntity> getTypesMedia();
+    @Query(value = "SELECT idgenre,designation FROM genremedia",
             nativeQuery = true)
-    GenreMediaEntity getGenreMedia(Integer id);
+    List<GenreMediaEntity> getGenresMedia();
 }

@@ -277,6 +277,37 @@ paths:
                     media:
                       type: string
       operationId: get-medias-classement
+  /types:
+    get:
+      summary: Récupère tous les types de médias
+      tags:
+        - typegenremedia
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TypeMedia'
+      operationId: get-types
+  /genres:
+    get:
+      summary: Récupère tous les genres de médias
+      tags:
+        - typegenremedia
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GenreMedia'
+      operationId: get-genres
+    parameters: []
 components:
   schemas:
     Utilisateur:

@@ -2,7 +2,9 @@ package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.service.impl;
 
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper.AuteurMapper;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper.MediaMapper;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.GenreMedia;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Media;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.TypeMedia;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.repository.IAuteurRepository;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.repository.IMediaRepository;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.service.IMediaService;
@@ -70,5 +72,15 @@ public class MediaServiceImpl implements IMediaService {
     public List<Media> computeMediaWithLimits(Integer limit, Integer page) {
         Integer offset = (page - 1) * limit;
         return MediaMapper.INSTANCE.mapToModel(mediaRepository.getMediaLimitAndPage(limit, offset));
+    }
+
+    @Override
+    public List<TypeMedia> getTypes() {
+        return MediaMapper.INSTANCE.mapTypeToModel(mediaRepository.getTypesMedia());
+    }
+
+    @Override
+    public List<GenreMedia> getGenres() {
+        return MediaMapper.INSTANCE.mapGenreToModel(mediaRepository.getGenresMedia());
     }
 }

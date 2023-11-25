@@ -1,6 +1,8 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.service;
 
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.GenreMedia;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Media;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.TypeMedia;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,4 +17,7 @@ public interface IMediaService {
     Integer updateMediaById(Integer id, Media data);
     Integer computeNewMedia(Media media);
     List<Media> computeMediaWithLimits(Integer limit, Integer page);
+
+    List<TypeMedia> getTypes();
+    List<GenreMedia> getGenres();
 }

@@ -44,13 +44,21 @@ public interface MediaMapper {
 
     @Mapping(source = "designationtype", target = "designationType")
     @Mapping(source = "designationauteur", target = "designationAuteur")
-    TypeMediaJson mapToJson(TypeMedia type);
+    TypeMediaJson mapTypeToJson(TypeMedia type);
 
-    GenreMediaJson mapToJson(GenreMedia type);
+    GenreMediaJson mapGenreToJson(GenreMedia type);
 
-    TypeMedia mapToModel(TypeMediaEntity typeMediaEntity);
+    TypeMedia mapTypeToModel(TypeMediaEntity typeMediaEntity);
 
-    GenreMedia mapToModel(GenreMediaEntity genreMediaEntity);
+    GenreMedia mapGenreToModel(GenreMediaEntity genreMediaEntity);
+
+    List<TypeMediaJson> mapTypeToJson(List<TypeMedia> type);
+
+    List<GenreMediaJson> mapGenreToJson(List<GenreMedia> type);
+
+    List<TypeMedia> mapTypeToModel(List<TypeMediaEntity> typeMediaEntity);
+
+    List<GenreMedia> mapGenreToModel(List<GenreMediaEntity> genreMediaEntity);
 
 
 }

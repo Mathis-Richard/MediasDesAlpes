@@ -1,9 +1,9 @@
 package fr.univtln.cnam.bdd.groupe5.mediasdesalpes.controller;
 
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.api.GenresApi;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.api.MediasApi;
-import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.GetMediasClassement200ResponseInnerJson;
-import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.MediaJson;
-import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.PostMediasWithLimitsRequestJson;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.api.TypesApi;
+import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.json.*;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.mapper.MediaMapper;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.GenreMedia;
 import fr.univtln.cnam.bdd.groupe5.mediasdesalpes.model.Media;
@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import java.util.List;
 
 @Controller
-@CrossOrigin(origins = "null", originPatterns = {"http://postgres:[*]","http://localhost:[*]"}, allowedHeaders = "*", allowCredentials = "true")
-public class MediaController implements MediasApi {
+@CrossOrigin(origins = "null", originPatterns = {"http://web:[*]", "http://postgres:[*]", "http://localhost:[*]"}, allowedHeaders = "*", allowCredentials = "true")
+public class MediaController implements MediasApi, GenresApi, TypesApi {
 
     private MediaServiceImpl mediaServiceImpl;
 
@@ -72,5 +72,15 @@ public class MediaController implements MediasApi {
         m.setType(new TypeMedia(mediaJson.getIdGenre()));
         Integer i = mediaServiceImpl.computeNewMedia(m);
         return i > 0 ? ResponseEntity.ok(null) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    public ResponseEntity<List<GenreMediaJson>> getGenres() {
+        return ResponseEntity.ok(MediaMapper.INSTANCE.mapGenreToJson(mediaServiceImpl.getGenres()));
+    }
+
+    @Override
+    public ResponseEntity<List<TypeMediaJson>> getTypes() {
+        return ResponseEntity.ok(MediaMapper.INSTANCE.mapTypeToJson(mediaServiceImpl.getTypes()));
     }
 }

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Entity(name = "Typemedia")
 @Table(name = "typemedia")
 public class TypeMediaEntity {
@@ -21,6 +24,17 @@ public class TypeMediaEntity {
     @NotNull
     @Column(name = "designationauteur", nullable = false)
     private String designationauteur;
+
+    @OneToMany(mappedBy = "idtype")
+    private Set<MediaEntity> media = new LinkedHashSet<>();
+
+    public Set<MediaEntity> getMedia() {
+        return media;
+    }
+
+    public void setMedia(Set<MediaEntity> media) {
+        this.media = media;
+    }
 
     public Integer getId() {
         return id;
