@@ -1,5 +1,4 @@
 function mediaCardMaker(bookDataArray) {
-
     // Création du conteneur principal
     const mainContainer = document.createElement("div");
     let nbBook = 0;
@@ -138,29 +137,24 @@ function createMediaFormUserView() {
     var labelTitre = createLabel("titre", "Titre:");
     var inputTitre = createInput("text", "titre", "titre", true);
 
-    var labelAuteur = createLabel("auteur", "Auteur/Réalisateur:");
-    var inputAuteur = createInput("text", "auteur", "auteur", true);
+    var labelAuteur = createLabel("genre", "Genre:");
+    var selectAuteur = createSelect("idGenre", "idGenre", true);
+    addOption(selectAuteur, "ADMINISTRATEUR", "ADMINISTRATEUR");
+    addOption(selectAuteur, "UTILISATEUR", "UTILISATEUR");
 
-    var labelAnnee = createLabel("annee", "Année de publication/Sortie:");
-    var inputAnnee = createInput("text", "annee", "annee", true);
+    var labelAnnee = createLabel("anneePublicationSortie", "Année de publication/Sortie:");
+    var inputAnnee = createInput("text", "anneePublicationSortie", "anneePublicationSortie", true);
 
     var labelTypeMedia = createLabel("typeMedia", "Type de média:");
-    var selectTypeMedia = createSelect("typeMedia", "typeMedia", true);
-    addOption(selectTypeMedia, "disponible", "Livre");
-    addOption(selectTypeMedia, "emprunte", "CD");
-    addOption(selectTypeMedia, "reserve", "DVD");
+    var selectTypeMedia = createSelect("idType", "idType", true);
+    addOption(selectTypeMedia, "ADMINISTRATEUR", "ADMINISTRATEUR");
+    addOption(selectTypeMedia, "UTILISATEUR", "UTILISATEUR");
 
-    var labelQuantite = createLabel("quantite", "Quantité disponible:");
-    var inputQuantite = createInput("number", "quantite", "quantite", true);
+    var labelQuantite = createLabel("img", "Lien image:");
+    var inputQuantite = createInput("text", "img", "img", true);
 
-    var labelStatut = createLabel("statut", "Statut:");
-    var selectStatut = createSelect("statut", "statut", true);
-    addOption(selectStatut, "disponible", "Disponible");
-    addOption(selectStatut, "emprunte", "Emprunté");
-    addOption(selectStatut, "reserve", "Réservé");
-
-    var labelUrlImage = createLabel("urlImage", "URL Image:");
-    var inputUrlImage = createInput("url", "urlImage", "urlImage");
+    var labelStatut = createLabel("note", "Note:");
+    var selectStatut = createInput("number","note", "note", true);
 
     var inputSubmit = document.createElement("input");
     inputSubmit.setAttribute("type", "submit");
@@ -171,9 +165,10 @@ function createMediaFormUserView() {
         var formData = {};
         for (var i = 0; i < formElements.length; i++) {
             var element = formElements[i];
-            // Vérifier si l'élément a un nom et n'est pas le bouton de soumission
             if (element.name && element.type !== "submit") formData[element.name] = element.value;
         }
+        formData.id = '';
+
         console.log(formData);
     })
 
@@ -187,15 +182,17 @@ function createMediaFormUserView() {
     form.appendChild(document.createElement("br"));
 
     form.appendChild(labelAuteur);
-    form.appendChild(inputAuteur);
+    form.appendChild(selectAuteur);
+    form.appendChild(document.createElement("br"));
+
+
+
+    form.appendChild(labelTypeMedia);
+    form.appendChild(selectTypeMedia);
     form.appendChild(document.createElement("br"));
 
     form.appendChild(labelAnnee);
     form.appendChild(inputAnnee);
-    form.appendChild(document.createElement("br"));
-
-    form.appendChild(labelTypeMedia);
-    form.appendChild(selectTypeMedia);
     form.appendChild(document.createElement("br"));
 
     form.appendChild(labelQuantite);
@@ -203,12 +200,9 @@ function createMediaFormUserView() {
     form.appendChild(document.createElement("br"));
 
     form.appendChild(labelStatut);
-    form.appendChild(selectStatut);
+    form.appendChild(selectStatut)
     form.appendChild(document.createElement("br"));
 
-    form.appendChild(labelUrlImage);
-    form.appendChild(inputUrlImage);
-    form.appendChild(document.createElement("br"));
 
     form.appendChild(inputSubmit);
     document.getElementById('viewContainerId').appendChild(form);

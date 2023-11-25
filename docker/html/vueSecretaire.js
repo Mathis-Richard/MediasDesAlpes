@@ -59,29 +59,25 @@ function createMediaForm() {
     var labelTitre = createLabel("titre", "Titre:");
     var inputTitre = createInput("text", "titre", "titre", true);
 
-    var labelAuteur = createLabel("auteur", "Auteur/Réalisateur:");
-    var inputAuteur = createInput("text", "auteur", "auteur", true);
+    var labelAuteur = createLabel("genre", "Genre:");
+    var selectAuteur = createSelect("idGenre", "idGenre", true);
+    addOption(selectAuteur, "ADMINISTRATEUR", "ADMINISTRATEUR");
+    addOption(selectAuteur, "UTILISATEUR", "UTILISATEUR");
 
-    var labelAnnee = createLabel("annee", "Année de publication/Sortie:");
-    var inputAnnee = createInput("text", "annee", "annee", true);
+    var labelAnnee = createLabel("anneePublicationSortie", "Année de publication/Sortie:");
+    var inputAnnee = createInput("text", "anneePublicationSortie", "anneePublicationSortie", true);
 
     var labelTypeMedia = createLabel("typeMedia", "Type de média:");
-    var selectTypeMedia = createSelect("typeMedia", "typeMedia", true);
-    addOption(selectTypeMedia, "disponible", "Livre");
-    addOption(selectTypeMedia, "emprunte", "CD");
-    addOption(selectTypeMedia, "reserve", "DVD");
+    var selectTypeMedia = createSelect("idType", "idType", true);
+    addOption(selectTypeMedia, "ADMINISTRATEUR", "ADMINISTRATEUR");
+    addOption(selectTypeMedia, "UTILISATEUR", "UTILISATEUR");
 
-    var labelQuantite = createLabel("quantite", "Quantité disponible:");
-    var inputQuantite = createInput("number", "quantite", "quantite", true);
+    var labelQuantite = createLabel("img", "Lien image:");
+    var inputQuantite = createInput("text", "img", "img", true);
 
-    var labelStatut = createLabel("statut", "Statut:");
-    var selectStatut = createSelect("statut", "statut", true);
-    addOption(selectStatut, "disponible", "Disponible");
-    addOption(selectStatut, "emprunte", "Emprunté");
-    addOption(selectStatut, "reserve", "Réservé");
+    var labelStatut = createLabel("note", "Note:");
+    var selectStatut = createInput("number", "note", "note", true);
 
-    var labelUrlImage = createLabel("urlImage", "URL Image:");
-    var inputUrlImage = createInput("url", "urlImage", "urlImage");
 
     var inputSubmit = document.createElement("input");
     inputSubmit.setAttribute("type", "submit");
@@ -92,9 +88,10 @@ function createMediaForm() {
         var formData = {};
         for (var i = 0; i < formElements.length; i++) {
             var element = formElements[i];
-            // Vérifier si l'élément a un nom et n'est pas le bouton de soumission
             if (element.name && element.type !== "submit") formData[element.name] = element.value;
         }
+        formData.id = '';
+
         console.log(formData);
     })
 
@@ -108,15 +105,16 @@ function createMediaForm() {
     form.appendChild(document.createElement("br"));
 
     form.appendChild(labelAuteur);
-    form.appendChild(inputAuteur);
+    form.appendChild(selectAuteur);
+    form.appendChild(document.createElement("br"));
+
+
+    form.appendChild(labelTypeMedia);
+    form.appendChild(selectTypeMedia);
     form.appendChild(document.createElement("br"));
 
     form.appendChild(labelAnnee);
     form.appendChild(inputAnnee);
-    form.appendChild(document.createElement("br"));
-
-    form.appendChild(labelTypeMedia);
-    form.appendChild(selectTypeMedia);
     form.appendChild(document.createElement("br"));
 
     form.appendChild(labelQuantite);
@@ -124,16 +122,12 @@ function createMediaForm() {
     form.appendChild(document.createElement("br"));
 
     form.appendChild(labelStatut);
-    form.appendChild(selectStatut);
+    form.appendChild(selectStatut)
     form.appendChild(document.createElement("br"));
 
-    form.appendChild(labelUrlImage);
-    form.appendChild(inputUrlImage);
-    form.appendChild(document.createElement("br"));
 
     form.appendChild(inputSubmit);
     document.getElementById('vueCreateMedia').appendChild(form);
-
 }
 
 function createUserAccountForm() {
@@ -151,31 +145,31 @@ function createUserAccountForm() {
         form.id = 'formMakeUserAccount';
 
         // Création et ajout des éléments du formulaire
-        //var labelIdUtilisateur = createLabel("idUtilisateur", "ID Utilisateur (Clé primaire):");
-        //var inputIdUtilisateur = createInput("text", "idUtilisateur", "idUtilisateur", true);
 
         var labelNom = createLabel("nom", "Nom:");
-        var inputNom = createInput("text", "nom", "nom", true);
+        var inputNom = createInput("text", "nomUtilisateur", "nomUtilisateur", true);
 
         var labelPrenom = createLabel("prenom", "Prénom:");
-        var inputPrenom = createInput("text", "prenom", "prenom", true);
+        var inputPrenom = createInput("text", "prenomUtilisateur", "prenomUtilisateur", true);
 
         var labelAdresse = createLabel("adresse", "Adresse:");
-        var inputAdresse = createInput("text", "adresse", "adresse", true);
+        var inputAdresse = createInput("text", "adresseUtilisateur", "adresseUtilisateur", true);
 
         var labelTelephone = createLabel("telephone", "Numéro de téléphone:");
-        var inputTelephone = createInput("tel", "telephone", "telephone", true);
+        var inputTelephone = createInput("tel", "numTelephoneUtilisateur", "numTelephoneUtilisateur", true);
 
         var labelEmail = createLabel("email", "Adresse e-mail:");
-        var inputEmail = createInput("email", "email", "email", true);
+        var inputEmail = createInput("email", "emailUtilisateur", "emailUtilisateur", true);
 
-        var labelMotDePasse = createLabel("motDePasse", "Mot de passe:");
-        var inputMotDePasse = createInput("password", "motDePasse", "motDePasse", true);
 
-        var labelTypeProfil = createLabel("typeProfil", "Type de profil:");
-        var selectTypeProfil = createSelect("typeProfil", "typeProfil", true);
-        addOption(selectTypeProfil, "responsable", "Responsable de médiathèque");
-        addOption(selectTypeProfil, "usager", "Usager");
+        // Adding date of birth field
+        var labelDateNaissance = createLabel("dateNaissance", "Date de naissance:");
+        var inputDateNaissance = createInput("date", "dateNaissanceUtilisateur", "dateNaissanceUtilisateur", true);
+
+        var labelTypeProfil = createLabel("typeProfilUtilisateur", "Type de profil:");
+        var selectTypeProfil = createSelect("typeProfilUtilisateur", "typeProfilUtilisateur", true);
+        addOption(selectTypeProfil, "ADMINISTRATEUR", "ADMINISTRATEUR");
+        addOption(selectTypeProfil, "UTILISATEUR", "UTILISATEUR");
 
         var inputSubmit = document.createElement("input");
         inputSubmit.setAttribute("type", "submit");
@@ -186,17 +180,28 @@ function createUserAccountForm() {
             var formData = {};
             for (var i = 0; i < formElements.length; i++) {
                 var element = formElements[i];
-                // Vérifier si l'élément a un nom et n'est pas le bouton de soumission
                 if (element.name && element.type !== "submit") formData[element.name] = element.value;
             }
-            console.log(formData);
+            formData.id = '';
+            fetch('http://localhost:9191/utilisateurs/new', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Vous pouvez ajouter d'autres en-têtes si nécessaire
+                },
+                body: JSON.stringify(formData) // Convertir les données en format JSON
+            })
+                .then(response => {
+                    // Vérifier si la requête a réussi (statut 2xx)
+                    if (!response.ok) {
+                        throw new Error('La requête a échoué avec le statut ' + response.status);
+                    }
+                    // Convertir la réponse en JSON
+                    return response.json();
+                })
         })
 
         // Ajout des éléments au formulaire
-        //form.appendChild(labelIdUtilisateur);
-        //form.appendChild(inputIdUtilisateur);
-        //form.appendChild(document.createElement("br"));
-
         form.appendChild(labelNom);
         form.appendChild(inputNom);
         form.appendChild(document.createElement("br"));
@@ -217,8 +222,8 @@ function createUserAccountForm() {
         form.appendChild(inputEmail);
         form.appendChild(document.createElement("br"));
 
-        form.appendChild(labelMotDePasse);
-        form.appendChild(inputMotDePasse);
+        form.appendChild(labelDateNaissance);
+        form.appendChild(inputDateNaissance);
         form.appendChild(document.createElement("br"));
 
         form.appendChild(labelTypeProfil);
@@ -227,13 +232,10 @@ function createUserAccountForm() {
 
         form.appendChild(inputSubmit);
 
-
         document.getElementById('vueCreateMedia').appendChild(form);
-
-
-
     }
 }
+
 
 // Fonction utilitaire pour créer un label
 function createLabel(forAttribute, textContent) {
@@ -303,12 +305,18 @@ function generateTableModifyUser(columnNames, rowData) {
     });
 
     tableHTML += '</tr>\n</thead>\n<tbody>\n';
-
     // Ajouter les données des lignes
     rowData.forEach(row => {
+        let count = 0;
         tableHTML += '<tr>\n';
         row.forEach(cell => {
-            tableHTML += `<td><input type="text" value="${cell}"></td>\n`;
+            count++;
+            if (count === 3) {
+                tableHTML += `<td><input type="text" disabled=true value="${cell}"></td>\n`;
+            } else {
+                tableHTML += `<td><input type="text" value="${cell}"></td>\n`;
+            }
+
         });
         tableHTML += '</tr>\n';
     });
@@ -321,24 +329,68 @@ function generateTableModifyUser(columnNames, rowData) {
 function submitForm() {
     const table = $('#myTable').DataTable();
     const inputValues = [];
-
+    let userTabObject = [];
     // Parcourir toutes les lignes du tableau
     table.rows().every(function () {
         const rowData = [];
         const cells = $(this.node()).find('input');
 
+        let user = {
+            "id": "",
+            "emailUtilisateur": "",
+            "mdpUtilisateur": "",
+            "nomUtilisateur": "",
+            "prenomUtilisateur": "",
+            "adresseUtilisateur": "",
+            "numTelephoneUtilisateur": "",
+            "dateNaissanceUtilisateur": "",
+            "typeProfilUtilisateur": "",
+        };
+
+
         // Parcourir tous les inputs dans la ligne
+        let i = 0;
         cells.each(function () {
-            const inputValue = $(this).val();
-            rowData.push(inputValue);
+            user[Object.keys(user)[i]] = $(this).val();
+            i++;
+            if (i > 8) {
+                i = 0;
+                userTabObject.push(user);
+            }
         });
 
-        inputValues.push(rowData);
     });
-
-    // Afficher les valeurs dans la console ou effectuer d'autres actions
-    console.log(inputValues);
+    console.log(userTabObject);
+    for (let keyObject in userTabObject) {
+        const data = userTabObject[keyObject];
+        console.log("oui", userTabObject[keyObject]);
+        let itemId = userTabObject[keyObject].emailUtilisateur;
+        itemId = encodeURIComponent(itemId);
+        fetch(`http://localhost:9191/utilisateurs/${itemId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('La requête a échoué avec le statut ' + response.status);
+                }
+                // Convertir la réponse en JSON
+                return response.json();
+            })
+            .then(updatedData => {
+                // Traiter les données mises à jour ici
+                console.log(updatedData);
+            })
+            .catch(error => {
+                // Gérer les erreurs ici
+                console.error('Erreur lors de la requête PATCH:', error);
+            });
+    }
 }
+
 
 function modifyUserAccountForm() {
     if (document.getElementById('vueCreateMedia').children[0]) {
@@ -361,50 +413,60 @@ function modifyUserAccountForm() {
 
 
         // Exemple d'utilisation
-        const columnNames = ["ID", "Nom", "Prénom", "Adresse", "Numéro de téléphone", "Adresse e-mail", "Mot de passe", "Type de profil"];
-        const rowData = [
-            ["1", "Doe", "Joe", "average_basement", "0123456789", "doe@joe.com", "itsmefr", "averageJoe"],
-            ["2", "Smith", "Alice", "wonderland", "9876543210", "alice.smith@example.com", "alice_wonder", "wonderAlice"],
-            ["3", "Johnson", "Bob", "fantasy_land", "5551234567", "bob.johnson@example.com", "bobby", "fantasyBob"],
-            ["4", "Williams", "Emily", "dreamville", "3339998888", "emily.williams@example.com", "emily_dream", "dreamEmily"],
-            ["5", "Brown", "David", "secret_garden", "1112223333", "david.brown@example.com", "david_secret", "secretDavid"],
-            ["6", "Miller", "Ella", "enchanted_forest", "6667778888", "ella.miller@example.com", "ella_enchanted", "enchantedElla"],
-            ["7", "Davis", "Michael", "magic_kingdom", "4445556666", "michael.davis@example.com", "michael_magic", "magicMichael"],
-            ["8", "Garcia", "Sophia", "fairy_tale", "8887776666", "sophia.garcia@example.com", "sophia_fairy", "fairySophia"],
-            ["9", "Martinez", "Oliver", "storybook_land", "2223334444", "oliver.martinez@example.com", "oliver_story", "storybookOliver"],
-            ["10", "Taylor", "Isabella", "wonderful_world", "9998887777", "isabella.taylor@example.com", "isabella_wonder", "wonderfulIsabella"],
-            ["11", "Anderson", "Sophie", "enchanted_castle", "7778889999", "sophie.anderson@example.com", "sophie_enchanted", "enchantedSophie"],
-            ["12", "White", "Jack", "magic_forest", "1234567890", "jack.white@example.com", "jack_magic", "magicJack"],
-            ["13", "Clark", "Emma", "dreamy_meadow", "4567890123", "emma.clark@example.com", "emma_dreamy", "dreamyEmma"],
-            ["14", "Thomas", "Liam", "fantastic_village", "7890123456", "liam.thomas@example.com", "liam_fantastic", "fantasticLiam"],
-            ["15", "Hall", "Ava", "storybook_mansion", "2345678901", "ava.hall@example.com", "ava_storybook", "storybookAva"],
-            ["16", "Moore", "Mia", "secret_valley", "5678901234", "mia.moore@example.com", "mia_secret", "secretMia"],
-            ["17", "Adams", "Noah", "wonderland_grove", "8901234567", "noah.adams@example.com", "noah_wonder", "wonderNoah"],
-            ["18", "Baker", "Grace", "enchanted_glade", "3456789012", "grace.baker@example.com", "grace_enchanted", "enchantedGrace"],
-            ["19", "Ross", "Lily", "magic_haven", "6789012345", "lily.ross@example.com", "lily_magic", "magicLily"],
-            ["20", "Ward", "Logan", "fantasy_sanctuary", "0123456789", "logan.ward@example.com", "logan_fantasy", "fantasyLogan"]
-        ];
+        const columnNames = ["ID", "email", "Mot de passe", "Nom", "Prenom", "Adresse", "Telephone", "Date de naissance", "Type de profil"];
+        fetch('http://localhost:9191/utilisateurs', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+            .then(response => {
+                // Vérifier si la requête a réussi (statut 200 OK)
+                if (!response.ok) {
+                    throw new Error('La requête a échoué avec le statut ' + response.status);
+                }
+                // Convertir la réponse en JSON
+                return response.json();
+            })
+            .then(data => {
+                // Traiter les données ici
+                let dataConverted = convertirTableau(data);
+                const generatedTable = generateTableModifyUser(columnNames, dataConverted);
+
+                myTableContainer.innerHTML = generatedTable;
 
 
-        const generatedTable = generateTableModifyUser(columnNames, rowData);
-
-        myTableContainer.innerHTML = generatedTable;
-
-
-        // Initialiser DataTables
-        $(document).ready(function () {
-            $('#myTable').DataTable({
-                "columnDefs": [
-                    { "type": "html-input", "targets": "_all" } // Définir le type de colonne comme "html-input"
-                ]
+                // Initialiser DataTables
+                $(document).ready(function () {
+                    $('#myTable').DataTable({
+                        "columnDefs": [
+                            {"type": "html-input", "targets": "_all"} // Définir le type de colonne comme "html-input"
+                        ]
+                    });
+                });
+                document.getElementById('vueCreateMedia').appendChild(myFormContainer);
+            })
+            .catch(error => {
+                // Gérer les erreurs ici
+                console.error('Erreur lors de la requête:', error);
             });
-        });
-
-
-        document.getElementById('vueCreateMedia').appendChild(myFormContainer);
     }
 
 
+}
+
+function supprimerElement(tableau, champ) {
+    // Filtrer chaque objet dans le tableau
+    const nouveauTableau = tableau.map(objet => {
+        // Vérifier si le champ existe dans l'objet
+        if (champ in objet) {
+            // Supprimer le champ de l'objet
+            delete objet[champ];
+        }
+        return objet;
+    });
+
+    return nouveauTableau;
 }
 
 /*function createModifyUserButtons() {
@@ -431,6 +493,37 @@ function modifyUserAccountForm() {
         document.getElementById('vueCreateMedia').appendChild(createdUserForm);
     })
 }*/
+
+function convertirTableau(objets) {
+    const resultats = [];
+
+    for (const objet of objets) {
+        const ligne = Object.values(objet).map((valeur) => (valeur !== null && valeur !== undefined) ? valeur.toString() : "");
+        resultats.push(ligne);
+    }
+
+    return resultats;
+}
+
+function updateDataWithMappings(data, typeMap, genreMap) {
+    return data.map(item => {
+        const updatedItem = { ...item };
+
+        // Mise à jour de idType
+        const typeMapping = typeMap.find(type => type.id === item.idType);
+        if (typeMapping) {
+            updatedItem.idType = typeMapping.designationType;
+        }
+
+        // Mise à jour de idGenre
+        const genreMapping = genreMap.find(genre => genre.id === item.idGenre);
+        if (genreMapping) {
+            updatedItem.idGenre = genreMapping.designation;
+        }
+
+        return updatedItem;
+    });
+}
 
 function refreshView() {
     const topButtons = document.getElementById('topButtonsContainer');
